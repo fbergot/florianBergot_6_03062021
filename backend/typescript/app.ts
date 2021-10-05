@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as mongoose from "mongoose";
 import * as ExpressMongoSanitize from 'express-mongo-sanitize';
-// import ProductRouter from './router/productRouter';
+import ProductRouter from './router/productRouter';
 import UserRouter from './router/userRouter';
 import * as dotenv from 'dotenv';
 import * as crypto from 'crypto';
@@ -28,7 +28,7 @@ if (!state) process.exit();
 
 const app: express.Application = express();
 // base URL
-const baseUrlSauces = "/api/sauces";
+const baseUrlProduct = "/api/sauces";
 const baseUrlAuth = "/api/auth";
  
 app.use(express.json());
@@ -37,7 +37,7 @@ app.use(ExpressMongoSanitize());
 app.use("/images", express.static('images'))
 
 // // add routers
-// app.use(baseUrlProduct, ProductRouter);
+app.use(baseUrlProduct, ProductRouter);
 app.use(baseUrlAuth, UserRouter);
 
 

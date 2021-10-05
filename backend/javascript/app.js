@@ -3,7 +3,7 @@ exports.__esModule = true;
 var express = require("express");
 var mongoose = require("mongoose");
 var ExpressMongoSanitize = require("express-mongo-sanitize");
-// import ProductRouter from './router/productRouter';
+var productRouter_1 = require("./router/productRouter");
 var userRouter_1 = require("./router/userRouter");
 var dotenv = require("dotenv");
 var crypto = require("crypto");
@@ -25,13 +25,13 @@ if (!state)
     process.exit();
 var app = express();
 // base URL
-var baseUrlSauces = "/api/sauces";
+var baseUrlProduct = "/api/sauces";
 var baseUrlAuth = "/api/auth";
 app.use(express.json());
 app.use(Factory_1.factory.InstanceUtils().setHeadersCORS);
 app.use(ExpressMongoSanitize());
 app.use("/images", express.static('images'));
 // // add routers
-// app.use(baseUrlProduct, ProductRouter);
+app.use(baseUrlProduct, productRouter_1["default"]);
 app.use(baseUrlAuth, userRouter_1["default"]);
 exports["default"] = app;

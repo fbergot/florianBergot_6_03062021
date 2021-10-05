@@ -1,10 +1,9 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
 import * as dotenv from "dotenv";
-import { modelUser, User } from "../model/user";
-import { BasicUserController } from '../interface/interfaces';
+import { modelUser} from "../model/user";
+import { BasicUserController, UserInterface } from "../interface/interfaces";
 import { MessagesUserController } from '../enum/enum';
-import { factory } from '../class/Factory';
 import Bcrypt from "../class/Bcrypt";
 import JSONWebToken from "../class/JSONwebToken";
 
@@ -59,7 +58,7 @@ export default class UserController implements BasicUserController {
      */
     async login(req: express.Request, res: express.Response, next: CallableFunction): Promise<boolean|null> {
         try {
-            const filter: mongoose.FilterQuery<User> = { email: req.body.email };
+            const filter: mongoose.FilterQuery<UserInterface> = { email: req.body.email };
             var user = await modelUser.findOne(filter);               
             if (!user) {
                 res.status(401).json({ message: MessagesUserController.notPresent });

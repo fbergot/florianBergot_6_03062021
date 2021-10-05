@@ -1,12 +1,7 @@
 import { Schema, model } from "mongoose";
+import { UserInterface } from '../interface/interfaces';
 
-
-export interface User {
-    email: {type: string, required: boolean, unique: boolean},
-    password: {type: string, required: boolean}
-}
-
-const userSchema = new Schema<User>(
+const userSchema = new Schema<UserInterface>(
     {
         email: { type: String, required: true, unique: true },
         password: {type: String, required: true}

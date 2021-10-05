@@ -32,3 +32,21 @@ export interface BasicConnectionInterface {
     connect: (urlMongoDb: string, options: {}, mongoose: Mongoose) => Promise<boolean>;
 }
 
+export interface UserInterface {
+    email: {type: string, required: boolean, unique: boolean},
+    password: {type: string, required: boolean}
+}
+
+export interface SauceInterface {
+    userId: { type: string, required: boolean },
+    name: { type: string, required: boolean },
+    manufacturer: { type: string, required: boolean },
+    mainPepper: { type: string, required: boolean },
+    imageUrl: { type: string, required: boolean },
+    heat: { type: number, required: boolean },
+    likes: { type: number, required: boolean },
+    disLikes: { type: number, required: boolean },
+    usersLiked: { type: Array<string>, required: boolean },
+    usersDisliked: { type: Array<string>, required: boolean },
+}
+
