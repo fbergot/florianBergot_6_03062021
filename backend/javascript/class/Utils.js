@@ -8,7 +8,6 @@ exports.__esModule = true;
 var Utils = /** @class */ (function () {
     /**
      *Creates an instance of Utils.
-     * @param {http.Server} [server]
      * @memberof Utils
      */
     function Utils() {
@@ -41,7 +40,7 @@ var Utils = /** @class */ (function () {
      */
     Utils.prototype.logHandler = function (port, server) {
         var address = server ? server.address() : undefined;
-        var bind = typeof address === "string" ? "pipe: " + address : "port: " + (port ? port : "invalid");
+        var bind = typeof address === "string" ? "pipe: " + address : "port: " + port;
         console.log("listening on " + bind);
     };
     /**
@@ -77,7 +76,7 @@ var Utils = /** @class */ (function () {
      * @memberof Utils
      */
     Utils.prototype.setHeadersCORS = function (req, res, next) {
-        res.setHeader('Access-Control-Allow-Origin', "*");
+        res.setHeader('Access-Control-Allow-Origin', "http://127.0.0.1:8081");
         res.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
         next();

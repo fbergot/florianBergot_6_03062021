@@ -10,7 +10,6 @@ export default class Utils {
 
     /**
      *Creates an instance of Utils.
-     * @param {http.Server} [server]
      * @memberof Utils
      */
     constructor() {}
@@ -41,9 +40,9 @@ export default class Utils {
      * @param {(number|string)} port
      * @memberof Utils
      */
-    logHandler(port: number|boolean, server:http.Server): void {
+    logHandler(port: number, server:http.Server): void {
         const address = server ? server.address() : undefined;
-        const bind = typeof address === "string" ? `pipe: ${address}` : `port: ${port ? port : "invalid"}`;
+        const bind = typeof address === "string" ? `pipe: ${address}` : `port: ${port}`;
         console.log("listening on " + bind);
     }
 
@@ -83,7 +82,7 @@ export default class Utils {
      * @memberof Utils
      */
     setHeadersCORS(req: express.Request, res: express.Response, next: CallableFunction): void {
-        res.setHeader('Access-Control-Allow-Origin', "*");
+        res.setHeader('Access-Control-Allow-Origin', "http://127.0.0.1:8081");
         res.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
         next();
