@@ -8,17 +8,18 @@ var userRouter_1 = require("./router/userRouter");
 var dotenv = require("dotenv");
 var crypto = require("crypto");
 var Factory_1 = require("./class/Factory");
+var rateLimit = require("express-rate-limit");
 dotenv.config();
-// check secret in var_env or definition if is absent
+// check secret in var_env or generate if it's absent
 if (!process.env.SECRET) {
     Factory_1.factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
         .then(function (secretRandom) { return process.env.SECRET = secretRandom; })["catch"](function (err) { return console.error(err.message); });
 }
+// mongo connection
 var options = {
     useNewUrlParser: true,
     useUnifiedTopology: true
 };
-// mongo connection
 var state = Factory_1.factory.InstanceConnection().connect(process.env.mongoUrl || "", options, mongoose);
 // if no DB connection, exit of process
 if (!state)
@@ -27,11 +28,18 @@ var app = express();
 // base URL
 var baseUrlProduct = "/api/sauces";
 var baseUrlAuth = "/api/auth";
+// anti brute force measure 
+var apiLimiter = rateLimit({
+    windowMs: (60 * 60 * 1000),
+    max: 20,
+    message: "Too many accounts created from this IP, please try again after an hour"
+});
+// add middlewares
 app.use(express.json());
 app.use(Factory_1.factory.InstanceUtils().setHeadersCORS);
 app.use(ExpressMongoSanitize());
 app.use("/images", express.static('images'));
 // // add routers
 app.use(baseUrlProduct, productRouter_1["default"]);
-app.use(baseUrlAuth, userRouter_1["default"]);
+app.use(baseUrlAuth, apiLimiter, userRouter_1["default"]);
 exports["default"] = app;
