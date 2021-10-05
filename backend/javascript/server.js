@@ -1,0 +1,12 @@
+"use strict";
+exports.__esModule = true;
+var http = require("http");
+var app_1 = require("./app");
+var dotenv = require("dotenv");
+var Factory_1 = require("./class/Factory");
+dotenv.config();
+var server = http.createServer(app_1["default"]);
+var port = Factory_1.factory.InstanceUtils().normalizePort(process.env.PORT || 3000);
+server.on("error", function (err) { return Factory_1.factory.InstanceUtils().errorHandler(err, server, port); });
+server.on("listening", function () { return Factory_1.factory.InstanceUtils().logHandler(port, server); });
+server.listen(port);
