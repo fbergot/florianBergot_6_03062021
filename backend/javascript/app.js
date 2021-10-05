@@ -10,11 +10,6 @@ var crypto = require("crypto");
 var Factory_1 = require("./class/Factory");
 var rateLimit = require("express-rate-limit");
 dotenv.config();
-// check secret in var_env or generate if it's absent
-if (!process.env.SECRET) {
-    Factory_1.factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
-        .then(function (secretRandom) { return process.env.SECRET = secretRandom; })["catch"](function (err) { return console.error(err.message); });
-}
 // mongo connection
 var options = {
     useNewUrlParser: true,
@@ -24,6 +19,11 @@ var state = Factory_1.factory.InstanceConnection().connect(process.env.mongoUrl 
 // if no DB connection, exit of process
 if (!state)
     process.exit();
+// check secret in var_env or generate if it's absent
+if (!process.env.SECRET) {
+    Factory_1.factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
+        .then(function (secretRandom) { return process.env.SECRET = secretRandom; })["catch"](function (err) { return console.error(err.message); });
+}
 var app = express();
 // base URL
 var baseUrlProduct = "/api/sauces";

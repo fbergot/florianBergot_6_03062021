@@ -10,13 +10,6 @@ import * as rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
-// check secret in var_env or generate if it's absent
-if (!process.env.SECRET) {
-    factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
-      .then((secretRandom: string) => process.env.SECRET = secretRandom)
-      .catch((err: Error) => console.error(err.message));
-}
-
 // mongo connection
 const options = {
   useNewUrlParser: true, 
@@ -27,6 +20,13 @@ const state: Promise<boolean> = factory.InstanceConnection().connect(process.env
 // if no DB connection, exit of process
 if (!state) process.exit();
 
+// check secret in var_env or generate if it's absent
+if (!process.env.SECRET) {
+    factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
+      .then((secretRandom: string) => process.env.SECRET = secretRandom)
+      .catch((err: Error) => console.error(err.message));
+}
+
 const app: express.Application = express();
 
 // base URL
@@ -36,10 +36,9 @@ const baseUrlAuth = "/api/auth";
 // anti brute force measure 
 const apiLimiter = rateLimit(
     {
-    windowMs: (60 * 60 * 1000),
-    max: 20,
-    message:
-    "Too many accounts created from this IP, please try again after an hour"
+        windowMs: (60 * 60 * 1000),
+        max: 20,
+        message: "Too many accounts created from this IP, please try again after an hour"
     }
 );
 

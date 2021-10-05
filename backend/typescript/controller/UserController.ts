@@ -1,4 +1,4 @@
-import * as express from "express";
+import { Request, Response } from "express";
 import * as mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import { modelUser} from "../model/user";
@@ -30,7 +30,7 @@ export default class UserController implements BasicUserController {
      * @returns {Promise<boolean>}
      * @memberof UserController
      */
-    async signUp(req: express.Request, res: express.Response, next: CallableFunction): Promise<boolean> {
+    async signUp(req: Request, res: Response, next: CallableFunction): Promise<boolean> {
         try {
             const hashPassword = await this.instanceBcrypt.bcyptHash(req.body.password, parseInt(this.salt));
             const user = new modelUser(
@@ -56,7 +56,7 @@ export default class UserController implements BasicUserController {
      * @returns {(Promise<boolean|null>)}
      * @memberof UserController
      */
-    async login(req: express.Request, res: express.Response, next: CallableFunction): Promise<boolean|null> {
+    async login(req: Request, res: Response, next: CallableFunction): Promise<boolean|null> {
         try {
             const filter: mongoose.FilterQuery<UserInterface> = { email: req.body.email };
             var user = await modelUser.findOne(filter);               
@@ -64,7 +64,7 @@ export default class UserController implements BasicUserController {
                 res.status(401).json({ message: MessagesUserController.notPresent });
                 return null;
             }                           
-        } catch (e:any) {
+        } catch (e: any) {
             res.status(500).json({ error: e.message });
             return null;
         }
