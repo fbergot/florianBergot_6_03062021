@@ -19,7 +19,7 @@ var state = Factory_1.factory.InstanceConnection().connect(process.env.mongoUrl 
 // if no DB connection, exit of process
 if (!state)
     process.exit();
-// check secret in var_env or generate if it's absent
+// check secret in env or generate if it's absent
 if (!process.env.SECRET) {
     Factory_1.factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
         .then(function (secretRandom) { return process.env.SECRET = secretRandom; })["catch"](function (err) { return console.error(err.message); });

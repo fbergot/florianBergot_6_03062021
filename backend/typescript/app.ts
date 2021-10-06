@@ -20,7 +20,7 @@ const state: Promise<boolean> = factory.InstanceConnection().connect(process.env
 // if no DB connection, exit of process
 if (!state) process.exit();
 
-// check secret in var_env or generate if it's absent
+// check secret in env or generate if it's absent
 if (!process.env.SECRET) {
     factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
       .then((secretRandom: string) => process.env.SECRET = secretRandom)
