@@ -36,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var enum_1 = require("../enum/enum");
 /**
  * For auth users
  * @static
@@ -51,6 +50,9 @@ var Auth = /** @class */ (function () {
     function Auth(UtilsInstance, JSONWebTokenInstance) {
         this.UtilsInst = UtilsInstance;
         this.JSONWebTokenInst = JSONWebTokenInstance;
+        this.unauthorized = "Requête non authentifiée",
+            this.errorMessageToken = "Aucun token dans le header authorization ou mal formé",
+            this.userIdNotCorrect = "User ID incorrecte";
     }
     /**
      * For verif auth (with token)
@@ -67,7 +69,7 @@ var Auth = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        token = this.UtilsInst.getTokenInHeader(req, enum_1.AuthMessage.errorMessageToken);
+                        token = this.UtilsInst.getTokenInHeader(req, this.errorMessageToken);
                         userId = void 0;
                         return [4 /*yield*/, this.JSONWebTokenInst.verifyJWT(token, process.env.SECRET || "", {})];
                     case 1:
@@ -76,7 +78,7 @@ var Auth = /** @class */ (function () {
                             userId = decodedToken.userId;
                         }
                         if (req.body.userId && (req.body.userId !== userId)) {
-                            throw Error("" + enum_1.AuthMessage.userIdNotCorrect);
+                            res.status(403).json({ error: "Request unauthorized" });
                         }
                         else {
                             next();
@@ -85,7 +87,7 @@ var Auth = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         e_1 = _a.sent();
-                        res.status(401).json({ error: e_1.message || enum_1.AuthMessage.unauthorized });
+                        res.status(401).json({ error: e_1.message || this.unauthorized });
                         return [2 /*return*/, false];
                     case 3: return [2 /*return*/];
                 }

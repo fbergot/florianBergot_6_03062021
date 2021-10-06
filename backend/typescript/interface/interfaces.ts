@@ -41,6 +41,7 @@ export interface ModelSauceInterface {
     userId: { type: string, required: boolean },
     name: { type: string, required: boolean },
     manufacturer: { type: string, required: boolean },
+    description: { type: string, required: boolean }
     mainPepper: { type: string, required: boolean },
     imageUrl: { type: string, required: boolean },
     heat: { type: number, required: boolean },
@@ -54,6 +55,7 @@ export interface SauceInterface {
     userId: string,
     name: string,
     manufacturer: string,
+    description: string,
     mainPepper: string,
     imageUrl: string,
     heat: number,
