@@ -1,8 +1,8 @@
 import { Schema, model } from "mongoose";
-import { SauceInterface } from '../interface/interfaces';
+import { ModelSauceInterface, SauceInterface } from '../interface/interfaces';
 
 
-const sauceSchema = new Schema<SauceInterface> (
+const sauceSchema = new Schema<ModelSauceInterface> (
     {
         userId: { type: String, required: true },
         name: { type: String, required: true },

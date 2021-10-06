@@ -82,7 +82,7 @@ export default class UserController implements BasicUserController {
         }
 
         try {
-            const userPassword:string = user.password;
+            const userPassword: string = user.password;
             if (!await this.instanceBcrypt.bcryptCompare(req.body.password, userPassword)) {
               res.status(401).json({ message: MessagesUserController.badPassword });
               return false;

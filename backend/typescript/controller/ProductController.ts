@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import * as mongoose from "mongoose";
-import { modelSauce } from "../model/sauce";
 import { BasicController, SauceInterface } from '../interface/interfaces';
 import * as fs from 'fs';
 
@@ -94,7 +93,7 @@ export default class ProductController implements BasicController {
     }
 
     /**
-     * For delete
+     * For delete item
      * @param {express.Request} req
      * @param {express.Response} res
      * @param {CallableFunction} next
@@ -115,7 +114,6 @@ export default class ProductController implements BasicController {
                         .catch((e: mongoose.Error) => res.status(400).json({ message: e.message }));
                 });
             })           
-            .catch((e: mongoose.Error) => res.status(404).json({ error: e.message }));
-        
-    }   
+            .catch((e: mongoose.Error) => res.status(404).json({ error: e.message }));       
+    }
 }

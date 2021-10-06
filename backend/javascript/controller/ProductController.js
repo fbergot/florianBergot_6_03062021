@@ -79,7 +79,7 @@ var ProductController = /** @class */ (function () {
             .then(function () { return res.status(200).json({ message: 'Objet modifié' }); })["catch"](function (e) { return res.status(400).json({ error: e.message }); });
     };
     /**
-     * For delete
+     * For delete item
      * @param {express.Request} req
      * @param {express.Response} res
      * @param {CallableFunction} next
