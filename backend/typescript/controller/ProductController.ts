@@ -17,7 +17,7 @@ export default class ProductController implements BasicController {
         this.model = model;
     }
     /**
-     * find one product
+     * find one/all item(s)
      * @param {express.Request} req
      * @param {express.Response} res
      * @param {CallableFunction} next

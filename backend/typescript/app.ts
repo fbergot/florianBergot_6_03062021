@@ -11,14 +11,14 @@ import * as rateLimit from 'express-rate-limit';
 dotenv.config();
 
 // mongo connection
-const options = {
-  useNewUrlParser: true, 
-  useUnifiedTopology: true,
-};
-const state: Promise<boolean> = factory.InstanceConnection().connect(process.env.mongoUrl || "", options, mongoose);
+(async (options: { useNewUrlParser: boolean; useUnifiedTopology: boolean }) => {
+  const state: boolean = await factory
+    .InstanceConnection()
+    .connect(process.env.mongoUrl || "", options, mongoose);
+  // if no DB connection, exit of current process
+  if (!state) process.exit();
+})({ useNewUrlParser: true, useUnifiedTopology: true });
 
-// if no DB connection, exit of process
-if (!state) process.exit();
 
 // check secret in env or generate if it's absent
 if (!process.env.SECRET) {
@@ -33,7 +33,7 @@ const app: express.Application = express();
 const baseUrlProduct = "/api/sauces";
 const baseUrlAuth = "/api/auth";
 
-// anti brute force measure 
+// connections/ip/time limiter 
 const apiLimiter = rateLimit(
     {
         windowMs: (60 * 60 * 1000),
@@ -48,10 +48,9 @@ app.use(factory.InstanceUtils().setHeadersCORS);
 app.use(ExpressMongoSanitize());
 app.use("/images", express.static('images'))
 
-// // add routers
+// routers
 app.use(baseUrlProduct, ProductRouter);
 app.use(baseUrlAuth, apiLimiter, UserRouter);
-
 
 export default app;
 

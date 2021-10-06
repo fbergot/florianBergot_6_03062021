@@ -40,7 +40,19 @@ var dotenv = require("dotenv");
 var user_1 = require("../model/user");
 var enum_1 = require("../enum/enum");
 dotenv.config();
+/**
+ * @use enum MessageUserController
+ * @export
+ * @class UserController
+ * @implements {BasicUserController}
+ */
 var UserController = /** @class */ (function () {
+    /**
+     *Creates an instance of UserController.
+     * @param {Bcrypt} instanceBcrypt
+     * @param {JSONWebToken} instanceJSONWebToken
+     * @memberof UserController
+     */
     function UserController(instanceBcrypt, instanceJSONWebToken) {
         var _a;
         this.salt = (_a = process.env.SALT) !== null && _a !== void 0 ? _a : "10";

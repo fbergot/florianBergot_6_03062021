@@ -10,12 +10,24 @@ import JSONWebToken from "../class/JSONwebToken";
 dotenv.config();
 
 
+/**
+ * @use enum MessageUserController
+ * @export
+ * @class UserController
+ * @implements {BasicUserController}
+ */
 export default class UserController implements BasicUserController {
 
     salt: string;
     instanceBcrypt: Bcrypt;
     instanceJSONWebToken: JSONWebToken;
 
+    /**
+     *Creates an instance of UserController.
+     * @param {Bcrypt} instanceBcrypt
+     * @param {JSONWebToken} instanceJSONWebToken
+     * @memberof UserController
+     */
     constructor(instanceBcrypt: Bcrypt, instanceJSONWebToken: JSONWebToken) {
         this.salt = process.env.SALT ?? "10";
         this.instanceBcrypt = instanceBcrypt;

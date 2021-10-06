@@ -22,7 +22,7 @@ var ProductController = /** @class */ (function () {
         this.model = model;
     }
     /**
-     * find one product
+     * find one/all item(s)
      * @param {express.Request} req
      * @param {express.Response} res
      * @param {CallableFunction} next
