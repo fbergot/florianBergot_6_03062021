@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { AuthMessage } from '../enum/enum';
 import Utils from '../class/Utils';
 import JSONWebToken from '../class/JSONwebToken';
 
@@ -37,7 +36,7 @@ export default class Auth {
      * @memberof Auth
      */
 
-    async verifAuth (req: Request, res: Response, next: CallableFunction): Promise<boolean> {
+    async verifAuth (req: Request, res: Response, next: CallableFunction): Promise<boolean|null> {
         try {
             const token = this.UtilsInst.getTokenInHeader(req, this.errorMessageToken);
             let userId: undefined | string;
@@ -47,13 +46,14 @@ export default class Auth {
             }
             if (req.body.userId && (req.body.userId !== userId)) {
                 res.status(403).json({ error: "Request unauthorized" });
+                return false;
             } else {
                 next();
                 return true;              
             }
         } catch (e: any) {
-            res.status(401).json({ error: e.message || this.unauthorized })
-            return false;
+            res.status(401).json({ error: e.message})
+            return null;
         }
     }
 }

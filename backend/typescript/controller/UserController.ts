@@ -3,7 +3,6 @@ import * as mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import { modelUser} from "../model/user";
 import { BasicUserController, UserInterface } from "../interface/interfaces";
-import { MessagesUserController } from '../enum/enum';
 import Bcrypt from "../class/Bcrypt";
 import JSONWebToken from "../class/JSONwebToken";
 
@@ -21,6 +20,9 @@ export default class UserController implements BasicUserController {
     salt: string;
     instanceBcrypt: Bcrypt;
     instanceJSONWebToken: JSONWebToken;
+    success: string; 
+    notPresent: string;
+    badPassword: string;
 
     /**
      *Creates an instance of UserController.
@@ -32,6 +34,9 @@ export default class UserController implements BasicUserController {
         this.salt = process.env.SALT ?? "10";
         this.instanceBcrypt = instanceBcrypt;
         this.instanceJSONWebToken = instanceJSONWebToken;
+        this.success = 'Utilisateur créé',
+        this.notPresent = 'Cette utilisateur n\'existe pas',
+        this.badPassword = 'Mot de passe incorrect'
 
     };
     /**
@@ -52,7 +57,7 @@ export default class UserController implements BasicUserController {
                 }
             );
             await user.save()
-            res.status(201).json({ message: MessagesUserController.success });
+            res.status(201).json({ message: this.success });
             return true;
         } catch (e: any) {
             res.status(500).json({ error: e.message });
@@ -73,7 +78,7 @@ export default class UserController implements BasicUserController {
             const filter: mongoose.FilterQuery<UserInterface> = { email: req.body.email };
             var user = await modelUser.findOne(filter);               
             if (!user) {
-                res.status(401).json({ message: MessagesUserController.notPresent });
+                res.status(401).json({ message: this.notPresent });
                 return null;
             }                           
         } catch (e: any) {
@@ -84,7 +89,7 @@ export default class UserController implements BasicUserController {
         try {
             const userPassword: string = user.password;
             if (!await this.instanceBcrypt.bcryptCompare(req.body.password, userPassword)) {
-              res.status(401).json({ message: MessagesUserController.badPassword });
+              res.status(401).json({ message: this.badPassword });
               return false;
             }
             const secret = process.env.SECRET ?? "";

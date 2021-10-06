@@ -79,6 +79,7 @@ var Auth = /** @class */ (function () {
                         }
                         if (req.body.userId && (req.body.userId !== userId)) {
                             res.status(403).json({ error: "Request unauthorized" });
+                            return [2 /*return*/, false];
                         }
                         else {
                             next();
@@ -87,8 +88,8 @@ var Auth = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         e_1 = _a.sent();
-                        res.status(401).json({ error: e_1.message || this.unauthorized });
-                        return [2 /*return*/, false];
+                        res.status(401).json({ error: e_1.message });
+                        return [2 /*return*/, null];
                     case 3: return [2 /*return*/];
                 }
             });

@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var dotenv = require("dotenv");
 var user_1 = require("../model/user");
-var enum_1 = require("../enum/enum");
 dotenv.config();
 /**
  * @use enum MessageUserController
@@ -58,6 +57,9 @@ var UserController = /** @class */ (function () {
         this.salt = (_a = process.env.SALT) !== null && _a !== void 0 ? _a : "10";
         this.instanceBcrypt = instanceBcrypt;
         this.instanceJSONWebToken = instanceJSONWebToken;
+        this.success = 'Utilisateur créé',
+            this.notPresent = 'Cette utilisateur n\'existe pas',
+            this.badPassword = 'Mot de passe incorrect';
     }
     ;
     /**
@@ -85,7 +87,7 @@ var UserController = /** @class */ (function () {
                         return [4 /*yield*/, user.save()];
                     case 2:
                         _a.sent();
-                        res.status(201).json({ message: enum_1.MessagesUserController.success });
+                        res.status(201).json({ message: this.success });
                         return [2 /*return*/, true];
                     case 3:
                         e_1 = _a.sent();
@@ -117,7 +119,7 @@ var UserController = /** @class */ (function () {
                     case 1:
                         user = _b.sent();
                         if (!user) {
-                            res.status(401).json({ message: enum_1.MessagesUserController.notPresent });
+                            res.status(401).json({ message: this.notPresent });
                             return [2 /*return*/, null];
                         }
                         return [3 /*break*/, 3];
@@ -131,7 +133,7 @@ var UserController = /** @class */ (function () {
                         return [4 /*yield*/, this.instanceBcrypt.bcryptCompare(req.body.password, userPassword)];
                     case 4:
                         if (!(_b.sent())) {
-                            res.status(401).json({ message: enum_1.MessagesUserController.badPassword });
+                            res.status(401).json({ message: this.badPassword });
                             return [2 /*return*/, false];
                         }
                         secret = (_a = process.env.SECRET) !== null && _a !== void 0 ? _a : "";
