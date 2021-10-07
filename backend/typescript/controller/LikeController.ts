@@ -8,7 +8,8 @@ export default class LikeController {
     messages: {
         alreadyLiked: string,
         alreadyDisliked: string,
-        modifIsOk: string
+        modifIsOk: string,
+        badValue: string
     };
 
     /**
@@ -21,7 +22,8 @@ export default class LikeController {
         this.messages = {
             alreadyLiked: 'Cet utilisateur a déjà liké cette sauce',
             alreadyDisliked: 'Cet utilisateur a déjà disliké cette sauce',
-            modifIsOk: 'Modification enregistrée'    
+            modifIsOk: 'Modification enregistrée',
+            badValue: 'Bad value of "like"'
         }
     }
 
@@ -91,7 +93,7 @@ export default class LikeController {
                 }
                 break;
             default:
-                throw Error('Bad state of like, valid: (0, 1, -1)');
+                res.status(400).json({ message: this.messages.badValue });
         }                             
     }
 

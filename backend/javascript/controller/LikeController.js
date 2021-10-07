@@ -47,7 +47,8 @@ var LikeController = /** @class */ (function () {
         this.messages = {
             alreadyLiked: 'Cet utilisateur a déjà liké cette sauce',
             alreadyDisliked: 'Cet utilisateur a déjà disliké cette sauce',
-            modifIsOk: 'Modification enregistrée'
+            modifIsOk: 'Modification enregistrée',
+            badValue: 'Bad value of "like"'
         };
     }
     /**
@@ -132,7 +133,7 @@ var LikeController = /** @class */ (function () {
                 }
                 break;
             default:
-                throw Error('Bad state of like, valid: (0, 1, -1)');
+                res.status(400).json({ message: this.messages.badValue });
         }
     };
     /**

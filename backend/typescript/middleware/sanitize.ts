@@ -2,10 +2,24 @@ import { Request, Response, NextFunction } from 'express';
 import { Validator } from '../interface/interfaces';
 
 
+/**
+ * Function for delete left space and replace '<, >, ', "' in htmlEntities
+ * @param {Validator} validator
+ * @param {string} data
+ * @returns
+ */
 function sntz(validator: Validator, data: string) {
-    return validator.ltrim(validator.escape(data))
+    return validator.ltrim(validator.escape(data));
 }
 
+/**
+ * Analyze password & email properties for to sanitize auth input
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ * @param {Validator} validator
+ */
 export function sanitizerAuth(req: Request, res: Response, next: NextFunction, validator: Validator) {
     if (req.body.password) {
         req.body.password = sntz(validator, req.body.password); 
