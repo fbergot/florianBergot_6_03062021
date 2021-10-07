@@ -20,6 +20,10 @@ var fs = require("fs");
 var ProductController = /** @class */ (function () {
     function ProductController(model) {
         this.model = model;
+        this.messages = {
+            registered: 'Object registred with success',
+            modified: 'Object modified with success'
+        };
     }
     /**
      * find one/all item(s)
@@ -52,6 +56,7 @@ var ProductController = /** @class */ (function () {
      * @memberof ProductController
      */
     ProductController.prototype.save = function (req, res, next) {
+        var _this = this;
         var _a;
         // with multer, req.body change (req.body.sauce is a string of body)
         var objRequest = JSON.parse(req.body.sauce);
@@ -61,7 +66,7 @@ var ProductController = /** @class */ (function () {
         // new doc
         var docProduct = new this.model(objWithAllData);
         docProduct.save()
-            .then(function () { return res.status(201).json({ message: 'Objet enregistré' }); })["catch"](function (e) {
+            .then(function () { return res.status(201).json({ message: _this.messages.registered }); })["catch"](function (e) {
             // if error, remove img
             var fileName = objWithAllData.imageUrl.split("/images/")[1];
             fs.unlink("images/" + fileName, function (err) {
@@ -79,12 +84,13 @@ var ProductController = /** @class */ (function () {
      * @memberof ProductController
      */
     ProductController.prototype.update = function (req, res, next) {
+        var _this = this;
         var _a;
         var filter = { _id: req.params.id };
         // test if new image or not
         var newData = req.file ? __assign(__assign({}, JSON.parse(req.body.thing)), { imageUrl: req.protocol + "://" + req.get('host') + "/images/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) }) : __assign({}, req.body);
         this.model.updateOne(filter, __assign(__assign({}, newData), filter))
-            .then(function () { return res.status(200).json({ message: 'Objet modifié' }); })["catch"](function (e) { return res.status(400).json({ error: e.message }); });
+            .then(function () { return res.status(200).json({ message: _this.messages.modified }); })["catch"](function (e) { return res.status(400).json({ error: e.message }); });
     };
     /**
      * For delete item
@@ -99,8 +105,8 @@ var ProductController = /** @class */ (function () {
         // find
         this.model.findOne(filter)
             .then(function (product) {
+            // find filename & remove file img
             var fileName = product.imageUrl.split('/images/')[1];
-            // find filename & remove file
             fs.unlink("images/" + fileName, function (err) {
                 if (err)
                     throw err;

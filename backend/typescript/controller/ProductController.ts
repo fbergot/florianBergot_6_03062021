@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 import { BasicController, SauceInterface } from '../interface/interfaces';
 import * as fs from 'fs';
@@ -11,9 +11,17 @@ import * as fs from 'fs';
 export default class ProductController implements BasicController { 
 
     model: mongoose.Model<SauceInterface>;
+    messages: {
+        registered: string,
+        modified: string
+    }
 
     constructor(model: mongoose.Model<SauceInterface>) {
         this.model = model;
+        this.messages = {
+            registered: 'Object registred with success',
+            modified: 'Object modified with success'
+        }
     }
     /**
      * find one/all item(s)
@@ -22,7 +30,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    find(req: Request, res: Response, next: CallableFunction): void {
+    find(req: Request, res: Response, next: NextFunction): void {
         this.model.find()
             .then((products) => res.status(200).json(products))
             .catch((e: mongoose.Error) => res.status(400).json({ error: e.message }));
@@ -35,7 +43,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    findOne(req: Request, res: Response, next: CallableFunction): void {
+    findOne(req: Request, res: Response, next: NextFunction): void {
         const filter = { _id: req.params.id };
         this.model.findOne(filter)
             .then((product) => res.status(200).json(product))
@@ -49,7 +57,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    save(req: Request, res: Response, next: CallableFunction): void {
+    save(req: Request, res: Response, next: NextFunction): void {
         // with multer, req.body change (req.body.sauce is a string of body)
         const objRequest = JSON.parse(req.body.sauce);
         // add missing properties of sauce
@@ -65,7 +73,7 @@ export default class ProductController implements BasicController {
         // new doc
         const docProduct = new this.model(objWithAllData);
         docProduct.save()
-            .then(() => res.status(201).json({ message: 'Objet enregistré' }))
+            .then(() => res.status(201).json({ message: this.messages.registered }))
             .catch((e: mongoose.Error) => {
                 // if error, remove img
                     const fileName = objWithAllData.imageUrl.split("/images/")[1];
@@ -83,7 +91,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    update(req: Request, res: Response, next: CallableFunction): void {
+    update(req: Request, res: Response, next: NextFunction): void {
         const filter = { _id: req.params.id };
         // test if new image or not
         const newData = req.file ?
@@ -95,7 +103,7 @@ export default class ProductController implements BasicController {
                 ...req.body
             };       
         this.model.updateOne(filter, { ...newData , ...filter })
-            .then(() => res.status(200).json({ message: 'Objet modifié' }))
+            .then(() => res.status(200).json({ message: this.messages.modified }))
             .catch((e: mongoose.Error) => res.status(400).json({ error: e.message }));
     }
 
@@ -106,13 +114,13 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    delete(req: Request, res: Response, next: CallableFunction): void {
+    delete(req: Request, res: Response, next: NextFunction): void {
         const filter = { _id: req.params.id };
         // find
         this.model.findOne(filter)
             .then((product: any) => {
+                // find filename & remove file img
                 const fileName = product.imageUrl.split('/images/')[1];
-                // find filename & remove file
                 fs.unlink(`images/${fileName}`, (err) => {
                     if (err) throw err;
                     // delete item according to filter

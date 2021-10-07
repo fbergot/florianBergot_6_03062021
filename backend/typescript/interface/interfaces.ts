@@ -1,13 +1,13 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { Mongoose } from "mongoose";
 
 
 export interface BasicController {   
-    find: (req: Request, res: Response, next: CallableFunction) => void,
-    findOne: (req: Request, res: Response, next: CallableFunction) => void,
-    save: (req: Request, res: Response, next: CallableFunction) => void,
-    update: (req: Request, res: Response, next: CallableFunction) => void,
-    delete: (req: Request, res: Response, next: CallableFunction) => void, 
+    find: (req: Request, res: Response, next: NextFunction) => void,
+    findOne: (req: Request, res: Response, next: NextFunction) => void,
+    save: (req: Request, res: Response, next: NextFunction) => void,
+    update: (req: Request, res: Response, next: NextFunction) => void,
+    delete: (req: Request, res: Response, next: NextFunction) => void, 
 }
 
 export interface CryptoInterface {
@@ -15,8 +15,8 @@ export interface CryptoInterface {
 }
 
 export interface BasicUserController {
-    signUp: (req: Request, res: Response, next: CallableFunction) => Promise<boolean>,
-    login: (req: Request, res: Response, next: CallableFunction) => Promise<boolean|null>
+    signUp: (req: Request, res: Response, next: NextFunction) => Promise<boolean>,
+    login: (req: Request, res: Response, next: NextFunction) => Promise<boolean|null>
 }
 
 export interface PayloadInterface {
@@ -32,9 +32,24 @@ export interface BasicConnectionInterface {
     connect: (urlMongoDb: string, options: {}, mongoose: Mongoose) => Promise<boolean>;
 }
 
+export interface ModelUserInterface {
+    email: {
+        type: string,
+        required: [boolean, string],
+        unique: boolean,
+        validate: [() => boolean, string]
+    },
+    password: {
+        type: string,
+        required: [boolean, string],
+        minLength: [number, string],
+        maxLength: [number, string]
+    }
+}
+
 export interface UserInterface {
-    email: {type: string, required: boolean, unique: boolean},
-    password: {type: string, required: boolean}
+    email: string,
+    password: string
 }
 
 export interface ModelSauceInterface {
@@ -63,4 +78,9 @@ export interface SauceInterface {
     disLikes: number,
     usersLiked: Array<string>,
     usersDisliked: Array<string>,
+}
+
+export interface Validator {
+    ltrim: ((input: string) => string),
+    escape: ((input: string) => string)
 }

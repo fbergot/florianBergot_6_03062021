@@ -7,7 +7,7 @@ var validator_1 = require("validator");
 var userSchema = new mongoose_1.Schema({
     email: {
         type: String,
-        required: true,
+        required: [true, 'enter an email'],
         unique: true,
         validate: [validator_1["default"].isEmail, "Enter a valid email"]
     },
