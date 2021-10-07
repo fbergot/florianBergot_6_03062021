@@ -14,18 +14,20 @@ import JSONWebToken from '../class/JSONwebToken';
  */
 export default class Auth {
 
-    unauthorized: string; 
-    errorMessageToken: string; 
-    userIdNotCorrect: string;
     UtilsInst: Utils;
     JSONWebTokenInst: JSONWebToken;
+    messages: {
+        unauthorized: string; 
+        errorMessageToken: string; 
+    }
 
     constructor(UtilsInstance: Utils, JSONWebTokenInstance: JSONWebToken) {
         this.UtilsInst = UtilsInstance;
         this.JSONWebTokenInst = JSONWebTokenInstance;
-        this.unauthorized = "Requête non authentifiée",
-        this.errorMessageToken = "Aucun token dans le header authorization ou mal formé",
-        this.userIdNotCorrect = "User ID incorrecte"
+        this.messages = {
+            unauthorized : "Request unauthorized",
+            errorMessageToken : "Missing token or poorly formed",
+        }
     }
     /**
      * For verif auth (with token)
@@ -38,14 +40,14 @@ export default class Auth {
 
     async verifAuth (req: Request, res: Response, next: CallableFunction): Promise<boolean|null> {
         try {
-            const token = this.UtilsInst.getTokenInHeader(req, this.errorMessageToken);
+            const token = this.UtilsInst.getTokenInHeader(req, this.messages.errorMessageToken);
             let userId: undefined | string;
             const decodedToken = await this.JSONWebTokenInst.verifyJWT(token, process.env.SECRET || "", {});           
             if (decodedToken) {
                 userId = decodedToken.userId;
             }
             if (req.body.userId && (req.body.userId !== userId)) {
-                res.status(403).json({ error: "Request unauthorized" });
+                res.status(403).json({ error: this.messages.unauthorized });
                 return false;
             } else {
                 next();

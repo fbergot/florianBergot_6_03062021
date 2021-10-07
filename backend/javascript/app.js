@@ -39,12 +39,13 @@ exports.__esModule = true;
 var express = require("express");
 var mongoose = require("mongoose");
 var ExpressMongoSanitize = require("express-mongo-sanitize");
-var productRouter_1 = require("./router/productRouter");
-var userRouter_1 = require("./router/userRouter");
 var dotenv = require("dotenv");
 var crypto = require("crypto");
-var Factory_1 = require("./class/Factory");
 var rateLimit = require("express-rate-limit");
+var helmet = require("helmet");
+var productRouter_1 = require("./router/productRouter");
+var userRouter_1 = require("./router/userRouter");
+var Factory_1 = require("./class/Factory");
 dotenv.config();
 // mongo connection
 (function (options) { return __awaiter(void 0, void 0, void 0, function () {
@@ -83,6 +84,7 @@ app.use(express.json());
 app.use(Factory_1.factory.InstanceUtils().setHeadersCORS);
 app.use(ExpressMongoSanitize());
 app.use("/images", express.static('images'));
+app.use(helmet());
 // routers
 app.use(baseUrlProduct, productRouter_1["default"]);
 app.use(baseUrlAuth, apiLimiter, userRouter_1["default"]);

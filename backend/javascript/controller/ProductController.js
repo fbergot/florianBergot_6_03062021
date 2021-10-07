@@ -61,7 +61,15 @@ var ProductController = /** @class */ (function () {
         // new doc
         var docProduct = new this.model(objWithAllData);
         docProduct.save()
-            .then(function () { return res.status(201).json({ message: 'Objet enregistré' }); })["catch"](function (e) { return res.status(400).json({ error: e.message }); });
+            .then(function () { return res.status(201).json({ message: 'Objet enregistré' }); })["catch"](function (e) {
+            // if error, remove img
+            var fileName = objWithAllData.imageUrl.split("/images/")[1];
+            fs.unlink("images/" + fileName, function (err) {
+                if (err)
+                    throw err;
+            });
+            res.status(500).json({ error: e.message });
+        });
     };
     /**
      * For update item

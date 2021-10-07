@@ -91,12 +91,12 @@ export default class LikeController {
                 }
                 break;
             default:
-                throw Error('Bad state like, valid :(0, 1, -1)');
+                throw Error('Bad state of like, valid: (0, 1, -1)');
         }                             
     }
 
     /**
-     * Save and response
+     * Save and send response
      * @param {Response} res
      * @param {*} product
      * @memberof LikeController

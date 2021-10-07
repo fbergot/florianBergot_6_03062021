@@ -50,9 +50,10 @@ var Auth = /** @class */ (function () {
     function Auth(UtilsInstance, JSONWebTokenInstance) {
         this.UtilsInst = UtilsInstance;
         this.JSONWebTokenInst = JSONWebTokenInstance;
-        this.unauthorized = "Requête non authentifiée",
-            this.errorMessageToken = "Aucun token dans le header authorization ou mal formé",
-            this.userIdNotCorrect = "User ID incorrecte";
+        this.messages = {
+            unauthorized: "Request unauthorized",
+            errorMessageToken: "Missing token or poorly formed"
+        };
     }
     /**
      * For verif auth (with token)
@@ -69,7 +70,7 @@ var Auth = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        token = this.UtilsInst.getTokenInHeader(req, this.errorMessageToken);
+                        token = this.UtilsInst.getTokenInHeader(req, this.messages.errorMessageToken);
                         userId = void 0;
                         return [4 /*yield*/, this.JSONWebTokenInst.verifyJWT(token, process.env.SECRET || "", {})];
                     case 1:
@@ -78,7 +79,7 @@ var Auth = /** @class */ (function () {
                             userId = decodedToken.userId;
                         }
                         if (req.body.userId && (req.body.userId !== userId)) {
-                            res.status(403).json({ error: "Request unauthorized" });
+                            res.status(403).json({ error: this.messages.unauthorized });
                             return [2 /*return*/, false];
                         }
                         else {

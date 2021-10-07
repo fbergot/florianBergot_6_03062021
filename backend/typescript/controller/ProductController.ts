@@ -66,7 +66,14 @@ export default class ProductController implements BasicController {
         const docProduct = new this.model(objWithAllData);
         docProduct.save()
             .then(() => res.status(201).json({ message: 'Objet enregistré' }))
-            .catch((e: mongoose.Error) => res.status(400).json({ error: e.message }));    
+            .catch((e: mongoose.Error) => {
+                // if error, remove img
+                    const fileName = objWithAllData.imageUrl.split("/images/")[1];
+                    fs.unlink(`images/${fileName}`, (err) => {
+                        if (err) throw err;
+                    });
+                res.status(500).json({ error: e.message });
+            })     
     }
 
     /**

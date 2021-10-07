@@ -1,12 +1,13 @@
 import * as express from 'express';
 import * as mongoose from "mongoose";
 import * as ExpressMongoSanitize from 'express-mongo-sanitize';
-import ProductRouter from './router/productRouter';
-import UserRouter from './router/userRouter';
 import * as dotenv from 'dotenv';
 import * as crypto from 'crypto';
-import { factory } from './class/Factory';
 import * as rateLimit from 'express-rate-limit';
+import * as helmet from 'helmet';
+import ProductRouter from './router/productRouter';
+import UserRouter from './router/userRouter';
+import { factory } from './class/Factory';
 
 dotenv.config();
 
@@ -46,11 +47,13 @@ const apiLimiter = rateLimit(
 app.use(express.json());
 app.use(factory.InstanceUtils().setHeadersCORS);
 app.use(ExpressMongoSanitize());
-app.use("/images", express.static('images'))
+app.use("/images", express.static('images'));
+app.use(helmet());
 
 // routers
 app.use(baseUrlProduct, ProductRouter);
 app.use(baseUrlAuth, apiLimiter, UserRouter);
+
 
 export default app;
 
