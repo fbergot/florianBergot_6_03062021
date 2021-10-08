@@ -58,13 +58,12 @@ export default class ProductController implements BasicController {
      * @memberof ProductController
      */
     save(req: Request, res: Response, next: NextFunction): void {
-        // with multer, req.body change (req.body.sauce is a string of body)
-        const objRequest = JSON.parse(req.body.sauce);
+        const objRequest = req.body.sauce;
         // add missing properties of sauce
         const objWithAllData = {
             ...objRequest,
             likes: 0,
-            disLikes: 0,
+            dislikes: 0,
             usersLiked: [],
             usersDisliked: [],
             imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file?.filename}`
@@ -74,14 +73,7 @@ export default class ProductController implements BasicController {
         const docProduct = new this.model(objWithAllData);
         docProduct.save()
             .then(() => res.status(201).json({ message: this.messages.registered }))
-            .catch((e: mongoose.Error) => {
-                // if error, remove img
-                    const fileName = objWithAllData.imageUrl.split("/images/")[1];
-                    fs.unlink(`images/${fileName}`, (err) => {
-                        if (err) throw err;
-                    });
-                res.status(500).json({ error: e.message });
-            })     
+            .catch((e: mongoose.Error) => res.status(500).json({ error: e.message }));                
     }
 
     /**

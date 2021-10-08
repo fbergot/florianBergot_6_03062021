@@ -26,7 +26,7 @@ export default class Bcrypt implements BcryptInterface {
      * @memberof Bcrypt
      */
     async bcyptHash(data: string | Buffer, salt: number): Promise<string> {
-            return await this.bcryptModule.hash(data, salt);      
+        return await this.bcryptModule.hash(data, salt);      
     }
 
     /**

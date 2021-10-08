@@ -1,53 +1,65 @@
 import { Request, Response, NextFunction } from 'express';
 import { Validator } from '../interface/interfaces';
 
+export default class Sanitize {
 
-/**
- * Function for delete left space and replace '<, >, ', "' in htmlEntities
- * @param {Validator} validator
- * @param {string} data
- * @returns
- */
-function sntz(validator: Validator, data: string) {
-    return validator.ltrim(validator.escape(data));
-}
+    validator: Validator;
 
-/**
- * Analyze password & email properties for to sanitize auth input
- * @export
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @param {Validator} validator
- */
-export function sanitizerAuth(req: Request, res: Response, next: NextFunction, validator: Validator) {
-    if (req.body.password) {
-        req.body.password = sntz(validator, req.body.password); 
+    constructor(validator: Validator) {
+        this.validator = validator;
     }
-    if (req.body.email) {
-        req.body.email = sntz(validator, req.body.email);        
+    /**
+    * Delete left space in string & escape <,> ... in htmlEntities
+    * @param {Validator} validator
+    * @param {String} data
+    */
+    sntz(validator: Validator, data: string) {
+        return validator.ltrim(validator.escape(data));
     }
-        console.log(req.body);
-    next();
-}
 
-/**
- * Analyze all properties of object req.body if typeof == string and sanitize
- * @export
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
- * @param {Validator} validator
- */
-export function sanitizeDataSauce(req: Request, res: Response, next: NextFunction, validator: Validator) {
-    if (req.body) {
-        for (let key in req.body) {
-            if (typeof key === 'string' && typeof req.body[key] === 'string') {
-                req.body[key] = sntz(validator, req.body[key]);
+    /**
+    * Analyze password & email properties for to sanitize auth input
+    * @param {Request} req
+    * @param {Response} res
+    * @param {NextFunction} next
+    * @param {Validator} validator
+    */
+    sanitizerAuth(req: Request, res: Response, next: NextFunction) {
+        if (req.body.password) {
+            req.body.password = this.sntz(this.validator, req.body.password); 
+        }
+        if (req.body.email) {
+            req.body.email = this.sntz(this.validator, req.body.email);        
+        }
+        next();
+    }
+
+    /**
+    * Analyze all properties of object req.body if typeof == string and sanitize
+    * @param {Request} req
+    * @param {Response} res
+    * @param {NextFunction} next
+    * @param {Validator} validator
+    */
+    sanitizeDataSauce(req: Request, res: Response, next: NextFunction) {
+        if (req.body.sauce) {
+            req.body.sauce = JSON.parse(req.body.sauce);
+            for (let key in req.body.sauce) {
+                if (typeof key === 'string' && typeof req.body[key] === 'string') {
+                    req.body[key] = this.sntz(this.validator, req.body[key]);
+                }
             }
         }
+        next();       
     }
-    next();       
 }
+
+
+
+
+
+
+
+
 
 

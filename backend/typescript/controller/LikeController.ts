@@ -20,9 +20,9 @@ export default class LikeController {
     constructor(model: Model<SauceInterface>) {
         this.model = model;
         this.messages = {
-            alreadyLiked: 'Cet utilisateur a déjà liké cette sauce',
-            alreadyDisliked: 'Cet utilisateur a déjà disliké cette sauce',
-            modifIsOk: 'Modification enregistrée',
+            alreadyLiked: 'This user already liked this sauce',
+            alreadyDisliked: 'This user already disliked this sauce',
+            modifIsOk: 'Registered modifications ',
             badValue: 'Bad value of "like"'
         }
     }
@@ -62,7 +62,7 @@ export default class LikeController {
         switch (stateLike) {
             case 1:
                 if (product.usersLiked.includes(id)) {
-                    res.status(400).json({ message: this.messages.alreadyLiked });
+                    res.status(409).json({ message: this.messages.alreadyLiked });
                 } else {
                     product.likes += 1;
                     product.usersLiked.push(id);
@@ -85,7 +85,7 @@ export default class LikeController {
                 break;
             case -1:
                 if (product.usersDisliked.includes(id)) {
-                    res.status(400).json({ message: this.messages.alreadyDisliked });
+                    res.status(409).json({ message: this.messages.alreadyDisliked });
                 } else {
                     product.disLikes += 1;
                     product.usersDisliked.push(id);

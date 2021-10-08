@@ -58,23 +58,14 @@ var ProductController = /** @class */ (function () {
     ProductController.prototype.save = function (req, res, next) {
         var _this = this;
         var _a;
-        // with multer, req.body change (req.body.sauce is a string of body)
-        var objRequest = JSON.parse(req.body.sauce);
+        var objRequest = req.body.sauce;
         // add missing properties of sauce
-        var objWithAllData = __assign(__assign({}, objRequest), { likes: 0, disLikes: 0, usersLiked: [], usersDisliked: [], imageUrl: req.protocol + "://" + req.get('host') + "/images/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) });
+        var objWithAllData = __assign(__assign({}, objRequest), { likes: 0, dislikes: 0, usersLiked: [], usersDisliked: [], imageUrl: req.protocol + "://" + req.get('host') + "/images/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) });
         delete objWithAllData._id;
         // new doc
         var docProduct = new this.model(objWithAllData);
         docProduct.save()
-            .then(function () { return res.status(201).json({ message: _this.messages.registered }); })["catch"](function (e) {
-            // if error, remove img
-            var fileName = objWithAllData.imageUrl.split("/images/")[1];
-            fs.unlink("images/" + fileName, function (err) {
-                if (err)
-                    throw err;
-            });
-            res.status(500).json({ error: e.message });
-        });
+            .then(function () { return res.status(201).json({ message: _this.messages.registered }); })["catch"](function (e) { return res.status(500).json({ error: e.message }); });
     };
     /**
      * For update item

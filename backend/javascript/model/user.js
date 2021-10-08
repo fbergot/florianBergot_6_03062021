@@ -13,9 +13,7 @@ var userSchema = new mongoose_1.Schema({
     },
     password: {
         type: String,
-        required: [true, 'enter a password'],
-        minLength: [4, 'Password should be at least four characters'],
-        maxlength: [20, 'Password should be less than 20 characters']
+        required: [true, 'Enter a password']
     }
 });
 userSchema.plugin(uniqueValidator);

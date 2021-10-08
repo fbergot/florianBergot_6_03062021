@@ -45,9 +45,9 @@ var LikeController = /** @class */ (function () {
     function LikeController(model) {
         this.model = model;
         this.messages = {
-            alreadyLiked: 'Cet utilisateur a déjà liké cette sauce',
-            alreadyDisliked: 'Cet utilisateur a déjà disliké cette sauce',
-            modifIsOk: 'Modification enregistrée',
+            alreadyLiked: 'This user already liked this sauce',
+            alreadyDisliked: 'This user already disliked this sauce',
+            modifIsOk: 'Registered modifications ',
             badValue: 'Bad value of "like"'
         };
     }
@@ -100,7 +100,7 @@ var LikeController = /** @class */ (function () {
         switch (stateLike) {
             case 1:
                 if (product.usersLiked.includes(id)) {
-                    res.status(400).json({ message: this.messages.alreadyLiked });
+                    res.status(409).json({ message: this.messages.alreadyLiked });
                 }
                 else {
                     product.likes += 1;
@@ -124,7 +124,7 @@ var LikeController = /** @class */ (function () {
                 break;
             case -1:
                 if (product.usersDisliked.includes(id)) {
-                    res.status(400).json({ message: this.messages.alreadyDisliked });
+                    res.status(409).json({ message: this.messages.alreadyDisliked });
                 }
                 else {
                     product.disLikes += 1;

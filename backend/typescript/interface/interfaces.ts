@@ -42,8 +42,6 @@ export interface ModelUserInterface {
     password: {
         type: string,
         required: [boolean, string],
-        minLength: [number, string],
-        maxLength: [number, string]
     }
 }
 
@@ -61,7 +59,7 @@ export interface ModelSauceInterface {
     imageUrl: { type: string, required: boolean },
     heat: { type: number, required: boolean },
     likes: { type: number, required: boolean },
-    disLikes: { type: number, required: boolean },
+    dislikes: { type: number, required: boolean },
     usersLiked: { type: Array<string>, required: boolean },
     usersDisliked: { type: Array<string>, required: boolean },
 }
@@ -75,7 +73,7 @@ export interface SauceInterface {
     imageUrl: string,
     heat: number,
     likes: number,
-    disLikes: number,
+    dislikes: number,
     usersLiked: Array<string>,
     usersDisliked: Array<string>,
 }

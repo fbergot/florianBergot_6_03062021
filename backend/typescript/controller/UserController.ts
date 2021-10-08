@@ -34,9 +34,9 @@ export default class UserController implements BasicUserController {
         this.salt = process.env.SALT ?? "10";
         this.instanceBcrypt = instanceBcrypt;
         this.instanceJSONWebToken = instanceJSONWebToken;
-        this.success = 'Utilisateur créé',
-        this.notPresent = 'Cette utilisateur n\'existe pas',
-        this.badPassword = 'Mot de passe incorrect'
+        this.success = 'User created',
+        this.notPresent = 'This user not exist',
+        this.badPassword = 'Password is incorrect'
 
     };
     /**

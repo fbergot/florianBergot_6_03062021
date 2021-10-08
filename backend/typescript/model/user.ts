@@ -6,16 +6,14 @@ import validator from 'validator';
 const userSchema = new Schema<ModelUserInterface>(
     {
         email: {
-            type: String,
+            type: String, 
             required: [true, 'enter an email'],
             unique: true,
             validate: [validator.isEmail, "Enter a valid email"]
         },
         password: {
             type: String,
-            required: [true, 'enter a password'],
-            minLength: [4, 'Password should be at least four characters'],
-            maxlength: [20, 'Password should be less than 20 characters']           
+            required: [true, 'Enter a password'],      
         }
     }
 )

@@ -57,9 +57,9 @@ var UserController = /** @class */ (function () {
         this.salt = (_a = process.env.SALT) !== null && _a !== void 0 ? _a : "10";
         this.instanceBcrypt = instanceBcrypt;
         this.instanceJSONWebToken = instanceJSONWebToken;
-        this.success = 'Utilisateur créé',
-            this.notPresent = 'Cette utilisateur n\'existe pas',
-            this.badPassword = 'Mot de passe incorrect';
+        this.success = 'User created',
+            this.notPresent = 'This user not exist',
+            this.badPassword = 'Password is incorrect';
     }
     ;
     /**
