@@ -85,11 +85,17 @@ var Validation = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!req.body.sauce) return [3 /*break*/, 4];
+                        if (!(req.body.sauce || req.body)) return [3 /*break*/, 4];
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        body = JSON.parse(req.body.sauce);
+                        if (req.body.sauce) {
+                            // if JSON.parse throw an , error, is SyntaxError
+                            body = JSON.parse(req.body.sauce);
+                        }
+                        else {
+                            body = req.body;
+                        }
                         return [4 /*yield*/, this.schemaProd.validate({
                                 userId: body.userId,
                                 name: body.name,
@@ -105,6 +111,9 @@ var Validation = /** @class */ (function () {
                         return [3 /*break*/, 4];
                     case 3:
                         err_2 = _a.sent();
+                        if (err_2 instanceof SyntaxError) {
+                            res.status(500).json({ error: err_2.message });
+                        }
                         res.status(400).json({ error: err_2.message });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];

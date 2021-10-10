@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import * as yup from 'yup';
 
 class Validation {
-    yup: any;
-    schemaAuth: any;
-    schemaProd: any;
+    protected yup: any;
+    protected schemaAuth: any;
+    protected schemaProd: any;
 
     constructor(yup: any) {
         this.schemaAuth = yup.object().shape({
@@ -12,7 +12,7 @@ class Validation {
             password: yup.string().required().min(4),
         });
 
-        this.schemaProd =  yup.object().shape({
+        this.schemaProd = yup.object().shape({
             userId: yup.string().required(),
             name: yup.string().required().max(30),
             manufacturer: yup.string().required().max(30),
@@ -24,7 +24,7 @@ class Validation {
         });
     }
 
-    async validationAuth(req: Request, res: Response, next: NextFunction) {
+    public async validationAuth(req: Request, res: Response, next: NextFunction) {
         try {
             const stateValid = await this.schemaAuth.validate({
                 email: req.body.email,
@@ -37,11 +37,17 @@ class Validation {
  
     }
 
-    async validationProd(req: Request, res: Response, next: NextFunction) {
+    public async validationProd(req: Request, res: Response, next: NextFunction) {
         let body: any;
-        if (req.body.sauce) {
+        if (req.body.sauce || req.body) {
             try {
-                body = JSON.parse(req.body.sauce);
+                if (req.body.sauce) {
+                    // if JSON.parse throw an , error, is SyntaxError
+                    body = JSON.parse(req.body.sauce);                   
+                } else {
+                    body = req.body;
+                }
+
                 const stateValid = await this.schemaProd.validate({            
                     userId: body.userId,
                     name: body.name,
@@ -53,6 +59,9 @@ class Validation {
                 })
                 if (stateValid) next();
             } catch (err: any) {
+                if (err instanceof SyntaxError) {
+                    res.status(500).json({ error: err.message });
+                }
                 res.status(400).json({ error: err.message });
             }
             

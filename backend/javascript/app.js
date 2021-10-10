@@ -53,20 +53,21 @@ dotenv.config();
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, Factory_1.factory
-                    .InstanceConnection()
+                    .getInstanceMemoized('ConnectionMemo')
                     .connect(process.env.mongoUrl || "", options, mongoose)];
             case 1:
                 state = _a.sent();
                 // if no DB connection, exit of current process
                 if (!state)
-                    process.exit();
+                    console.error('Out current process'), process.exit();
                 return [2 /*return*/];
         }
     });
 }); })({ useNewUrlParser: true, useUnifiedTopology: true });
 // check secret in env or generate if it's absent
 if (!process.env.SECRET) {
-    Factory_1.factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
+    Factory_1.factory.getInstanceMemoized('CryptoMemo')
+        .generateSecretRandom(crypto, 48, "hex")
         .then(function (secretRandom) { return process.env.SECRET = secretRandom; })["catch"](function (err) { return console.error(err.message); });
 }
 var app = express();
@@ -81,7 +82,7 @@ var apiLimiter = rateLimit({
 });
 // add middlewares
 app.use(express.json());
-app.use(Factory_1.factory.InstanceUtils().setHeadersCORS);
+app.use(Factory_1.factory.getInstanceMemoized('UtilsMemo').setHeadersCORS);
 app.use(ExpressMongoSanitize());
 app.use("/images", express.static('images'));
 app.use(helmet());

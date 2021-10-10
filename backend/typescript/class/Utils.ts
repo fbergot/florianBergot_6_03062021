@@ -20,7 +20,7 @@ export default class Utils {
      * @returns {(number | boolean)}
      * @memberof Utils
      */
-    normalizePort(val: string | number): number {
+    public normalizePort(val: string | number): number {
         let port: undefined | number;
         if (typeof val === 'string') {
             if (isNaN(parseInt(val, 10))) {
@@ -53,7 +53,7 @@ export default class Utils {
      * @param {http.Server} server
      * @memberof Utils
      */
-    errorHandler(error: any, server:http.Server, port: number): void {
+    public errorHandler(error: any, server:http.Server, port: number): void {
         if (error.syscall !== 'listen') {
             throw error;
         }      
@@ -81,7 +81,7 @@ export default class Utils {
      * @param {CallableFunction} next
      * @memberof Utils
      */
-    setHeadersCORS(req: express.Request, res: express.Response, next: CallableFunction): void {
+    public setHeadersCORS(req: express.Request, res: express.Response, next: CallableFunction): void {
         res.setHeader('Access-Control-Allow-Origin', "*");
         res.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -95,7 +95,7 @@ export default class Utils {
      * @returns {string}
      * @memberof Utils
      */
-    getTokenInHeader(req: express.Request, errorMessage: string): string {
+    public getTokenInHeader(req: express.Request, errorMessage: string): string {
         const token = req.headers.authorization?.split(' ')[1];
         if (!token) throw Error(`${errorMessage}`);
         return token;

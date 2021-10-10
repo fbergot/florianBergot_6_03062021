@@ -13,7 +13,7 @@ type classAllTypes = typeof Bcrypt | typeof Connection | typeof Crypto | typeof 
  * @param {{ module: any }} paramsObj
  * @returns {() => classAllTypes}
  */
-export default function memoized(Class: classAllTypes, paramsObj: { module: any }): () => classAllTypes {
+export default function memoized(Class: any, paramsObj: { module: any }): () => any {
     let lastReturn: any;
 
     return function () {

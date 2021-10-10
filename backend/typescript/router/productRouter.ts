@@ -12,8 +12,10 @@ import { valid } from "../middleware/Validation";
 const router: express.Router = express.Router();
 const basicController = new Controller(modelSauce);
 const likeController = new LikeController(modelSauce);
-const auth = new Auth(factory.InstanceUtils(), factory.InstanceJSONWebToken());
 const sanitize = new Sanitize(validator);
+const auth = new Auth(
+    factory.getInstanceMemoized("UtilsMemo"),
+    factory.getInstanceMemoized("JSONWebTokenMemo"));
 
 router.get(`/`,
     (req, res, next) => auth.verifAuth(req, res, next),

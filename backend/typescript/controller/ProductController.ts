@@ -10,8 +10,8 @@ import * as fs from 'fs';
  */
 export default class ProductController implements BasicController { 
 
-    model: mongoose.Model<SauceInterface>;
-    messages: {
+    private model: mongoose.Model<SauceInterface>;
+    private messages: {
         registered: string,
         modified: string
     }
@@ -30,7 +30,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    find(req: Request, res: Response, next: NextFunction): void {
+    public find(req: Request, res: Response, next: NextFunction): void {
         this.model.find()
             .then((products) => res.status(200).json(products))
             .catch((e: mongoose.Error) => res.status(400).json({ error: e.message }));
@@ -43,7 +43,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    findOne(req: Request, res: Response, next: NextFunction): void {
+    public findOne(req: Request, res: Response, next: NextFunction): void {
         const filter = { _id: req.params.id };
         this.model.findOne(filter)
             .then((product) => res.status(200).json(product))
@@ -57,7 +57,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    save(req: Request, res: Response, next: NextFunction): void {
+    public save(req: Request, res: Response, next: NextFunction): void {
         const objRequest = req.body.sauce;
         // add missing properties of sauce
         const objWithAllData = {
@@ -83,7 +83,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    update(req: Request, res: Response, next: NextFunction): void {
+    public update(req: Request, res: Response, next: NextFunction): void {
         const filter = { _id: req.params.id };
         // test if new image or not
         const newData = req.file ?
@@ -106,7 +106,7 @@ export default class ProductController implements BasicController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-    delete(req: Request, res: Response, next: NextFunction): void {
+    public delete(req: Request, res: Response, next: NextFunction): void {
         const filter = { _id: req.params.id };
         // find
         this.model.findOne(filter)

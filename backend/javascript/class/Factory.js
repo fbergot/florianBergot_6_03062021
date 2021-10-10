@@ -25,51 +25,19 @@ var Factory = /** @class */ (function () {
      * @memberof Factory
      */
     function Factory(BcryptInstMemo, ConnectionInstMemo, CryptoInstMemo, JSONWebTokenInstMemo, UtilsInstMemo) {
-        this.BcryptMemo = BcryptInstMemo;
-        this.ConnectionMemo = ConnectionInstMemo;
-        this.CryptoMemo = CryptoInstMemo;
-        this.JSONWebTokenMemo = JSONWebTokenInstMemo;
-        this.UtilsMemo = UtilsInstMemo;
+        this.allInstancesMemo = {
+            "BcryptMemo": BcryptInstMemo(),
+            "ConnectionMemo": ConnectionInstMemo(),
+            "CryptoMemo": CryptoInstMemo(),
+            "JSONWebTokenMemo": JSONWebTokenInstMemo(),
+            "UtilsMemo": UtilsInstMemo()
+        };
     }
-    /**
-     * Return an unique instance of Bcrypt
-     * @returns {Bcrypt}
-     * @memberof Factory
-     */
-    Factory.prototype.InstanceBcrypt = function () {
-        return this.BcryptMemo();
-    };
-    /**
-     * Return an unique instance of Connection
-     * @returns {Connection}
-     * @memberof Factory
-     */
-    Factory.prototype.InstanceConnection = function () {
-        return this.ConnectionMemo();
-    };
-    /**
-     * Return an unique instance of Crypto
-     * @returns {Crypto}
-     * @memberof Factory
-     */
-    Factory.prototype.InstanceCrypto = function () {
-        return this.CryptoMemo();
-    };
-    /**
-     * Return an unique instance of JsonWebToken
-     * @returns {JSONWebToken}
-     * @memberof Factory
-     */
-    Factory.prototype.InstanceJSONWebToken = function () {
-        return this.JSONWebTokenMemo();
-    };
-    /**
-     * Return an unique instance of Utils
-     * @returns {Utils}
-     * @memberof Factory
-     */
-    Factory.prototype.InstanceUtils = function () {
-        return this.UtilsMemo();
+    Factory.prototype.getInstanceMemoized = function (type) {
+        if (type in this.allInstancesMemo) {
+            return this.allInstancesMemo[type];
+        }
+        throw Error('The type is not a valid instance memoized');
     };
     return Factory;
 }());

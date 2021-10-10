@@ -24,7 +24,7 @@ export default class Connection implements BasicConnectionInterface{
      * @returns {Promise<boolean>}
      * @memberof Connection
      */
-    async connect(urlMongoDb: string, options: {}, mongoose: Mongoose): Promise<boolean> {
+    public async connect(urlMongoDb: string, options: {}, mongoose: Mongoose): Promise<boolean> {
         try {
             await mongoose.connect(urlMongoDb, options)
             console.log(`${this.connectionOk}`);

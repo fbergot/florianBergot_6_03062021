@@ -6,8 +6,10 @@ import Sanitize from "../middleware/Sanitize";
 import { valid } from '../middleware/Validation';
 
 const router: express.Router = express.Router();
-const controller = new Controller(factory.InstanceBcrypt(), factory.InstanceJSONWebToken());
 const sanitize = new Sanitize(validator);
+const controller = new Controller(
+  factory.getInstanceMemoized("BcryptMemo"),
+  factory.getInstanceMemoized("JSONWebTokenMemo"));
 
 router.post("/signup",
     (req, res, next) => valid.validationAuth(req, res, next),

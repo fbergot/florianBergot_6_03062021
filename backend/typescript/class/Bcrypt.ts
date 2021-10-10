@@ -25,7 +25,7 @@ export default class Bcrypt implements BcryptInterface {
      * @returns {Promise<string>}
      * @memberof Bcrypt
      */
-    async bcyptHash(data: string | Buffer, salt: number): Promise<string> {
+    public async bcyptHash(data: string | Buffer, salt: number): Promise<string> {
         return await this.bcryptModule.hash(data, salt);      
     }
 
@@ -36,7 +36,7 @@ export default class Bcrypt implements BcryptInterface {
      * @returns {Promise<boolean>}
      * @memberof Bcrypt
      */
-    async bcryptCompare(plaintextData: string, hash: string): Promise<boolean> {
+    public async bcryptCompare(plaintextData: string, hash: string): Promise<boolean> {
             return await this.bcryptModule.compare(plaintextData, hash);       
     }
 }

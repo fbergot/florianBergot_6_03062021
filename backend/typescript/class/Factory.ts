@@ -19,11 +19,13 @@ type callAll= () => classAllTypes;
  */
 export default class Factory {
 
-    BcryptMemo: () => any;
-    ConnectionMemo: () => any;
-    CryptoMemo: () => any;
-    JSONWebTokenMemo:  () => any;
-    UtilsMemo: () => any;
+    protected allInstancesMemo: {
+        "BcryptMemo": Bcrypt,
+        "ConnectionMemo": Connection,
+        "CryptoMemo": Crypto,
+        "JSONWebTokenMemo": JSONWebToken,
+        "UtilsMemo":  Utils
+    };
 
     /**
      *Creates an instance of Factory.
@@ -34,54 +36,26 @@ export default class Factory {
      * @param {callAll} UtilsInstMemo
      * @memberof Factory
      */
-    constructor(BcryptInstMemo: callAll, ConnectionInstMemo: callAll,
-        CryptoInstMemo: callAll, JSONWebTokenInstMemo: callAll, UtilsInstMemo: callAll) {
-        this.BcryptMemo = BcryptInstMemo;
-        this.ConnectionMemo = ConnectionInstMemo;
-        this.CryptoMemo = CryptoInstMemo;
-        this.JSONWebTokenMemo = JSONWebTokenInstMemo;
-        this.UtilsMemo = UtilsInstMemo;
+    constructor(BcryptInstMemo: () => Bcrypt, ConnectionInstMemo: () => Connection,
+        CryptoInstMemo: () => Crypto, JSONWebTokenInstMemo: () => JSONWebToken,
+        UtilsInstMemo: () => Utils) {
+        
+        this.allInstancesMemo = {
+            "BcryptMemo": BcryptInstMemo(),
+            "ConnectionMemo": ConnectionInstMemo(),
+            "CryptoMemo": CryptoInstMemo(),
+            "JSONWebTokenMemo": JSONWebTokenInstMemo(),
+            "UtilsMemo": UtilsInstMemo(),
+        };
     }
-    /**
-     * Return an unique instance of Bcrypt
-     * @returns {Bcrypt}
-     * @memberof Factory
-     */
-    InstanceBcrypt(): Bcrypt {     
-        return this.BcryptMemo();
-    }  
-    /**
-     * Return an unique instance of Connection
-     * @returns {Connection}
-     * @memberof Factory
-     */
-    InstanceConnection(): Connection {     
-        return this.ConnectionMemo();
-    }  
-    /**
-     * Return an unique instance of Crypto
-     * @returns {Crypto}
-     * @memberof Factory
-     */
-    InstanceCrypto(): Crypto {     
-        return this.CryptoMemo();
-    }  
-    /**
-     * Return an unique instance of JsonWebToken
-     * @returns {JSONWebToken}
-     * @memberof Factory
-     */
-    InstanceJSONWebToken(): JSONWebToken {     
-        return this.JSONWebTokenMemo();
-    }  
-    /**
-     * Return an unique instance of Utils
-     * @returns {Utils}
-     * @memberof Factory
-     */
-    InstanceUtils(): Utils {     
-        return this.UtilsMemo();
-    }  
+    
+    public getInstanceMemoized(type: string) {
+        if (type in this.allInstancesMemo) {
+            return this.allInstancesMemo[type];
+        }
+        throw Error('The type is not a valid instance memoized');
+    }
+     
 }
 
 export const factory = new Factory (

@@ -17,12 +17,12 @@ dotenv.config();
  */
 export default class UserController implements BasicUserController {
 
-    salt: string;
-    instanceBcrypt: Bcrypt;
-    instanceJSONWebToken: JSONWebToken;
-    success: string; 
-    notPresent: string;
-    badPassword: string;
+    private salt: string;
+    private instanceBcrypt: Bcrypt;
+    private instanceJSONWebToken: JSONWebToken;
+    private success: string; 
+    private notPresent: string;
+    private badPassword: string;
 
     /**
      *Creates an instance of UserController.
@@ -47,7 +47,7 @@ export default class UserController implements BasicUserController {
      * @returns {Promise<boolean>}
      * @memberof UserController
      */
-    async signUp(req: Request, res: Response, next: NextFunction): Promise<boolean> {
+    public async signUp(req: Request, res: Response, next: NextFunction): Promise<boolean> {
         try {
             const hashPassword = await this.instanceBcrypt.bcyptHash(req.body.password, parseInt(this.salt));
             const user = new modelUser(
@@ -73,7 +73,7 @@ export default class UserController implements BasicUserController {
      * @returns {(Promise<boolean|null>)}
      * @memberof UserController
      */
-    async login(req: Request, res: Response, next: NextFunction): Promise<boolean|null> {
+    public async login(req: Request, res: Response, next: NextFunction): Promise<boolean|null> {
         try {
             const filter: mongoose.FilterQuery<UserInterface> = { email: req.body.email };
             var user = await modelUser.findOne(filter);               

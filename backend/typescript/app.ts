@@ -14,18 +14,19 @@ dotenv.config();
 // mongo connection
 (async (options: { useNewUrlParser: boolean; useUnifiedTopology: boolean }) => {
   const state: boolean = await factory
-    .InstanceConnection()
+    .getInstanceMemoized('ConnectionMemo')
     .connect(process.env.mongoUrl || "", options, mongoose);
   // if no DB connection, exit of current process
-  if (!state) process.exit();
+  if (!state) console.error('Out current process'), process.exit(); 
 })({ useNewUrlParser: true, useUnifiedTopology: true });
 
 
 // check secret in env or generate if it's absent
 if (!process.env.SECRET) {
-    factory.InstanceCrypto().generateSecretRandom(crypto, 48, "hex")
-      .then((secretRandom: string) => process.env.SECRET = secretRandom)
-      .catch((err: Error) => console.error(err.message));
+    factory.getInstanceMemoized('CryptoMemo')
+      .generateSecretRandom(crypto, 48, "hex")
+        .then((secretRandom: string) => process.env.SECRET = secretRandom)
+        .catch((err: Error) => console.error(err.message));
 }
 
 const app: express.Application = express();
@@ -45,7 +46,7 @@ const apiLimiter = rateLimit(
 
 // add middlewares
 app.use(express.json());
-app.use(factory.InstanceUtils().setHeadersCORS);
+app.use(factory.getInstanceMemoized('UtilsMemo').setHeadersCORS);
 app.use(ExpressMongoSanitize());
 app.use("/images", express.static('images'));
 app.use(helmet());

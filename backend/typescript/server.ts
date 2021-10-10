@@ -6,9 +6,14 @@ import { factory } from './class/Factory';
 dotenv.config();
 
 const server: http.Server = http.createServer(app);
-const port = factory.InstanceUtils().normalizePort(process.env.PORT || 3000);
+const port = factory
+  .getInstanceMemoized('UtilsMemo')
+  .normalizePort(process.env.PORT || 3000);
 
-server.on("error", (err) => factory.InstanceUtils().errorHandler(err, server, port));
-server.on("listening", () => factory.InstanceUtils().logHandler(port, server));
+server.on("error", (err) => factory.getInstanceMemoized('UtilsMemo')
+    .errorHandler(err, server, port));
+
+server.on("listening", () => factory.getInstanceMemoized('UtilsMemo')
+    .logHandler(port, server));
 
 server.listen(port);

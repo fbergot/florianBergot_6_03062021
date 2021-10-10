@@ -34,7 +34,7 @@ export default class LikeController {
      * @param {CallableFunction} next
      * @memberof ProductController
      */
-     async likeOrDislike(req: Request, res: Response, next: CallableFunction) {
+     public async likeOrDislike(req: Request, res: Response, next: CallableFunction) {
         const filter = { _id: req.params.id };
         const id: string = req.body.userId;
         const stateLike: number = req.body.like;
@@ -57,7 +57,7 @@ export default class LikeController {
      * @throw if stateLike is not 0, 1, -1
      * @memberof LikeController
      */
-    analyzeLikeState(res: Response, product: any, stateLike: number, id: string) {
+    private analyzeLikeState(res: Response, product: any, stateLike: number, id: string) {
         let index: undefined | number;
         switch (stateLike) {
             case 1:
@@ -103,7 +103,7 @@ export default class LikeController {
      * @param {*} product
      * @memberof LikeController
      */
-    async saveAndResponse(res: Response, product: any) {
+    private async saveAndResponse(res: Response, product: any) {
              await product.save();
              res.status(200).json({ message: this.messages.modifIsOk });
     }

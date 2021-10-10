@@ -9,7 +9,7 @@ import { PayloadInterface } from '../interface/interfaces';
  */
 export default class JSONWebToken {
 
-    JWT: typeof jwt;
+    protected JWT: typeof jwt;
 
     /**
      *Creates an instance of JSONWebToken.
@@ -28,7 +28,7 @@ export default class JSONWebToken {
      * @returns {Promise<any>}
      * @memberof JSONWebToken
      */
-    signJWT(payload: PayloadInterface, secret: string, options: jwt.SignOptions): Promise<any> {
+    public signJWT(payload: PayloadInterface, secret: string, options: jwt.SignOptions): Promise<any> {
         return new Promise((resolve, reject) => {
             this.JWT.sign(payload, secret, options, (err, token) => {
                 err ? reject(err) : resolve(token);
@@ -44,7 +44,7 @@ export default class JSONWebToken {
      * @returns {Promise<any>}
      * @memberof JSONWebToken
      */
-    verifyJWT(token: string, secret: jwt.Secret | jwt.GetPublicKeyOrSecret, options: any): Promise<any> {
+    public verifyJWT(token: string, secret: jwt.Secret | jwt.GetPublicKeyOrSecret, options: any): Promise<any> {
         return new Promise((resolve, reject) => {
             this.JWT.verify(token, secret, options, (err, decoded) => {
                 err ? reject(err) : resolve(decoded);
