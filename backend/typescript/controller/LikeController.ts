@@ -4,8 +4,8 @@ import { SauceInterface } from "../interface/interfaces";
 
 export default class LikeController {
 
-    model: Model<SauceInterface>;
-    messages: {
+    private model: Model<SauceInterface>;
+    private messages: {
         alreadyLiked: string,
         alreadyDisliked: string,
         modifIsOk: string,

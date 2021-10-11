@@ -9,12 +9,6 @@ import * as express from 'express';
 export default class Utils {
 
     /**
-     *Creates an instance of Utils.
-     * @memberof Utils
-     */
-    constructor() {}
-
-    /**
      * Normalize port
      * @param {string} val
      * @returns {(number | boolean)}

@@ -3,7 +3,7 @@ import { Validator } from '../interface/interfaces';
 
 export default class Sanitize {
 
-    validator: Validator;
+    private validator: Validator;
 
     constructor(validator: Validator) {
         this.validator = validator;
@@ -13,7 +13,7 @@ export default class Sanitize {
     * @param {Validator} validator
     * @param {String} data
     */
-    sntz(validator: Validator, data: string) {
+    private sntz(validator: Validator, data: string) {
         return validator.ltrim(validator.escape(data));
     }
 
@@ -24,7 +24,7 @@ export default class Sanitize {
     * @param {NextFunction} next
     * @param {Validator} validator
     */
-    sanitizerAuth(req: Request, res: Response, next: NextFunction) {
+    public sanitizerAuth(req: Request, res: Response, next: NextFunction) {
         if (req.body.password) {
             req.body.password = this.sntz(this.validator, req.body.password); 
         }
@@ -41,7 +41,7 @@ export default class Sanitize {
     * @param {NextFunction} next
     * @param {Validator} validator
     */
-    sanitizeDataSauce(req: Request, res: Response, next: NextFunction) {
+    public sanitizeDataSauce(req: Request, res: Response, next: NextFunction) {
         if (req.body.sauce) {
             req.body.sauce = JSON.parse(req.body.sauce);
             for (let key in req.body.sauce) {

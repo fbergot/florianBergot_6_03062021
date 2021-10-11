@@ -43,8 +43,8 @@ exports.__esModule = true;
  */
 var Connection = /** @class */ (function () {
     function Connection() {
-        this.connectionOk = "Connexion mongoDB réussie";
-        this.connectionNotOk = "Connexion mongoDB échouée";
+        this.connectionOk = "Connection ok";
+        this.connectionNotOk = "Connection failed";
     }
     /**
      * Connection DB

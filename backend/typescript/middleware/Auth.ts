@@ -14,9 +14,9 @@ import JSONWebToken from '../class/JSONwebToken';
  */
 export default class Auth {
 
-    UtilsInst: Utils;
-    JSONWebTokenInst: JSONWebToken;
-    messages: {
+    private UtilsInst: Utils;
+    private JSONWebTokenInst: JSONWebToken;
+    private messages: {
         unauthorized: string; 
         errorMessageToken: string; 
     }
@@ -38,7 +38,7 @@ export default class Auth {
      * @memberof Auth
      */
 
-    async verifAuth (req: Request, res: Response, next: CallableFunction): Promise<boolean|null> {
+    public async verifAuth (req: Request, res: Response, next: CallableFunction): Promise<boolean|null> {
         try {
             const token = this.UtilsInst.getTokenInHeader(req, this.messages.errorMessageToken);
             let userId: undefined | string;

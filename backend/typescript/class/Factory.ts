@@ -6,11 +6,13 @@ import Crypto from "./Crypto";
 import JSONWebToken from "./JSONwebToken";
 import Utils from "./Utils";
 import memoized from "../memo/memoized";
+import {
+  BcryptInterface,
+  BasicConnectionInterface,
+  CryptoInterface,
+} from "../interface/interfaces";
 
 
-// type allClass = Bcrypt | Connection | Crypto | JSONWebToken | Utils;
-type classAllTypes = typeof Bcrypt | typeof Connection | typeof Crypto | typeof JSONWebToken | typeof Utils;
-type callAll= () => classAllTypes;
 
 /**
  * Allow get unique instance memoized of class
@@ -18,50 +20,51 @@ type callAll= () => classAllTypes;
  * @class Factory
  */
 export default class Factory {
-
     protected allInstancesMemo: {
-        "BcryptMemo": Bcrypt,
-        "ConnectionMemo": Connection,
-        "CryptoMemo": Crypto,
-        "JSONWebTokenMemo": JSONWebToken,
-        "UtilsMemo":  Utils
+        BcryptMemo: BcryptInterface;
+        ConnectionMemo: BasicConnectionInterface;
+        CryptoMemo: CryptoInterface;
+        JSONWebTokenMemo: JSONWebToken;
+        UtilsMemo: Utils;
     };
 
     /**
      *Creates an instance of Factory.
-     * @param {callAll} BcryptInstMemo
-     * @param {callAll} ConnectionInstMemo
-     * @param {callAll} CryptoInstMemo
-     * @param {callAll} JSONWebTokenInstMemo
-     * @param {callAll} UtilsInstMemo
-     * @memberof Factory
-     */
-    constructor(BcryptInstMemo: () => Bcrypt, ConnectionInstMemo: () => Connection,
-        CryptoInstMemo: () => Crypto, JSONWebTokenInstMemo: () => JSONWebToken,
-        UtilsInstMemo: () => Utils) {
-        
+    * @param {() => Bcrypt} BcryptInstMemo
+    * @param {() => Connection} ConnectionInstMemo
+    * @param {() => Crypto} CryptoInstMemo
+    * @param {() => JSONWebToken} JSONWebTokenInstMemo
+    * @param {() => Utils} UtilsInstMemo
+    * @memberof Factory
+    */
+    constructor(
+        BcryptInstMemo: () => BcryptInterface,
+        ConnectionInstMemo: () => BasicConnectionInterface,
+        CryptoInstMemo: () => CryptoInterface,
+        JSONWebTokenInstMemo: () => JSONWebToken,
+        UtilsInstMemo: () => Utils
+        ) {
         this.allInstancesMemo = {
-            "BcryptMemo": BcryptInstMemo(),
-            "ConnectionMemo": ConnectionInstMemo(),
-            "CryptoMemo": CryptoInstMemo(),
-            "JSONWebTokenMemo": JSONWebTokenInstMemo(),
-            "UtilsMemo": UtilsInstMemo(),
+            BcryptMemo: BcryptInstMemo(),
+            ConnectionMemo: ConnectionInstMemo(),
+            CryptoMemo: CryptoInstMemo(),
+            JSONWebTokenMemo: JSONWebTokenInstMemo(),
+            UtilsMemo: UtilsInstMemo(),
         };
     }
-    
+
     public getInstanceMemoized(type: string) {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];
         }
-        throw Error('The type is not a valid instance memoized');
+        throw Error("The argument type is not a valid");
     }
-     
 }
 
 export const factory = new Factory (
-    memoized(Bcrypt, { module:  bcrypt }),
-    memoized(Connection, { module: null }),
-    memoized(Crypto, { module: null }),
-    memoized(JSONWebToken, { module: jwt }),
-    memoized(Utils, { module: null })
+    memoized<BcryptInterface>(Bcrypt, { module:  bcrypt }),
+    memoized<BasicConnectionInterface>(Connection, { module: null }),
+    memoized<CryptoInterface>(Crypto, { module: null }),
+    memoized<JSONWebToken>(JSONWebToken, { module: jwt }),
+    memoized<Utils>(Utils, { module: null })
 )

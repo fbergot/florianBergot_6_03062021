@@ -8,12 +8,12 @@ import { BasicConnectionInterface } from "../interface/interfaces";
  */
 export default class Connection implements BasicConnectionInterface{
 
-    connectionOk: string;
-    connectionNotOk: string;
+    protected connectionOk: string;
+    protected connectionNotOk: string;
 
     constructor() {
-        this.connectionOk = "Connexion mongoDB réussie";
-        this.connectionNotOk = "Connexion mongoDB échouée";      
+        this.connectionOk = "Connection ok";
+        this.connectionNotOk = "Connection failed";      
     }
 
     /**

@@ -1,20 +1,18 @@
 import * as bcrypt from "bcrypt";
 import { BcryptInterface } from "../interface/interfaces";
 
+type ModBcrypt = typeof bcrypt;
+
 /**
  * For all brypt operation
  * @export
  * @class Bcrypt
  */
 export default class Bcrypt implements BcryptInterface {
-    bcryptModule: typeof bcrypt;
+    private bcryptModule:  ModBcrypt;
 
-    /**
-     *Creates an instance of Bcrypt.
-     * @param {typeof bcrypt} bcryptModule
-     * @memberof Bcrypt
-     */
-    constructor(obj: { module: any }) {
+
+    constructor(obj: { module: ModBcrypt }) {
         this.bcryptModule = obj.module;
     }
 
@@ -25,7 +23,7 @@ export default class Bcrypt implements BcryptInterface {
      * @returns {Promise<string>}
      * @memberof Bcrypt
      */
-    public async bcyptHash(data: string | Buffer, salt: number): Promise<string> {
+    public async bcryptHash(data: string | Buffer, salt: number): Promise<string> {
         return await this.bcryptModule.hash(data, salt);      
     }
 

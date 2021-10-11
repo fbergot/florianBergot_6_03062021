@@ -77,7 +77,7 @@ var UserController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.instanceBcrypt.bcyptHash(req.body.password, parseInt(this.salt))];
+                        return [4 /*yield*/, this.instanceBcrypt.bcryptHash(req.body.password, parseInt(this.salt))];
                     case 1:
                         hashPassword = _a.sent();
                         user = new user_1.modelUser({

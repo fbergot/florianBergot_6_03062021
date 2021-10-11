@@ -2,7 +2,6 @@ import { CryptoInterface } from '../interface/interfaces';
 
 export default class Crypto {
     
-    constructor() {}
     /**
      * Generate a random secret
      * @param {*} crypto

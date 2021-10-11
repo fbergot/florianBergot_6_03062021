@@ -6,10 +6,6 @@ exports.__esModule = true;
  * @class Utils
  */
 var Utils = /** @class */ (function () {
-    /**
-     *Creates an instance of Utils.
-     * @memberof Utils
-     */
     function Utils() {
     }
     /**

@@ -17,27 +17,27 @@ var memoized_1 = require("../memo/memoized");
 var Factory = /** @class */ (function () {
     /**
      *Creates an instance of Factory.
-     * @param {callAll} BcryptInstMemo
-     * @param {callAll} ConnectionInstMemo
-     * @param {callAll} CryptoInstMemo
-     * @param {callAll} JSONWebTokenInstMemo
-     * @param {callAll} UtilsInstMemo
-     * @memberof Factory
-     */
+    * @param {() => Bcrypt} BcryptInstMemo
+    * @param {() => Connection} ConnectionInstMemo
+    * @param {() => Crypto} CryptoInstMemo
+    * @param {() => JSONWebToken} JSONWebTokenInstMemo
+    * @param {() => Utils} UtilsInstMemo
+    * @memberof Factory
+    */
     function Factory(BcryptInstMemo, ConnectionInstMemo, CryptoInstMemo, JSONWebTokenInstMemo, UtilsInstMemo) {
         this.allInstancesMemo = {
-            "BcryptMemo": BcryptInstMemo(),
-            "ConnectionMemo": ConnectionInstMemo(),
-            "CryptoMemo": CryptoInstMemo(),
-            "JSONWebTokenMemo": JSONWebTokenInstMemo(),
-            "UtilsMemo": UtilsInstMemo()
+            BcryptMemo: BcryptInstMemo(),
+            ConnectionMemo: ConnectionInstMemo(),
+            CryptoMemo: CryptoInstMemo(),
+            JSONWebTokenMemo: JSONWebTokenInstMemo(),
+            UtilsMemo: UtilsInstMemo()
         };
     }
     Factory.prototype.getInstanceMemoized = function (type) {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];
         }
-        throw Error('The type is not a valid instance memoized');
+        throw Error("The argument type is not a valid");
     };
     return Factory;
 }());

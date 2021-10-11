@@ -49,7 +49,7 @@ export default class UserController implements BasicUserController {
      */
     public async signUp(req: Request, res: Response, next: NextFunction): Promise<boolean> {
         try {
-            const hashPassword = await this.instanceBcrypt.bcyptHash(req.body.password, parseInt(this.salt));
+            const hashPassword = await this.instanceBcrypt.bcryptHash(req.body.password, parseInt(this.salt));
             const user = new modelUser(
                 {
                     email: req.body.email,

@@ -42,11 +42,6 @@ exports.__esModule = true;
  * @class Bcrypt
  */
 var Bcrypt = /** @class */ (function () {
-    /**
-     *Creates an instance of Bcrypt.
-     * @param {typeof bcrypt} bcryptModule
-     * @memberof Bcrypt
-     */
     function Bcrypt(obj) {
         this.bcryptModule = obj.module;
     }
@@ -57,7 +52,7 @@ var Bcrypt = /** @class */ (function () {
      * @returns {Promise<string>}
      * @memberof Bcrypt
      */
-    Bcrypt.prototype.bcyptHash = function (data, salt) {
+    Bcrypt.prototype.bcryptHash = function (data, salt) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {

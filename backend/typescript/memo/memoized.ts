@@ -4,8 +4,8 @@ import Crypto from "../class/Crypto";
 import JSONWebToken from "../class/JSONwebToken";
 import Utils from "../class/Utils";
 
-type classAllTypes = typeof Bcrypt | typeof Connection | typeof Crypto | typeof JSONWebToken | typeof Utils;
-    
+
+
 /**
  * Memoized instance of class (with closure)
  * @export
@@ -13,10 +13,10 @@ type classAllTypes = typeof Bcrypt | typeof Connection | typeof Crypto | typeof 
  * @param {{ module: any }} paramsObj
  * @returns {() => classAllTypes}
  */
-export default function memoized(Class: any, paramsObj: { module: any }): () => any {
+export default function memoized<ClassType>(Class: any, paramsObj: { module: any}): () => ClassType {
     let lastReturn: any;
 
-    return function () {
+    return function<ClassType> (): ClassType {
         if (lastReturn) return lastReturn;
         lastReturn = new Class(paramsObj);
         return lastReturn;
