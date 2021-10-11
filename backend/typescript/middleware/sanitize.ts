@@ -22,7 +22,6 @@ export default class Sanitize {
     * @param {Request} req
     * @param {Response} res
     * @param {NextFunction} next
-    * @param {Validator} validator
     */
     public sanitizerAuth(req: Request, res: Response, next: NextFunction) {
         if (req.body.password) {
@@ -39,7 +38,6 @@ export default class Sanitize {
     * @param {Request} req
     * @param {Response} res
     * @param {NextFunction} next
-    * @param {Validator} validator
     */
     public sanitizeDataSauce(req: Request, res: Response, next: NextFunction) {
         if (req.body.sauce) {

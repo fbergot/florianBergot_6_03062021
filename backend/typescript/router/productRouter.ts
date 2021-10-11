@@ -8,14 +8,17 @@ import { modelSauce } from '../model/sauce';
 import Sanitize from '../middleware/Sanitize';
 import validator from 'validator';
 import { valid } from "../middleware/Validation";
+import Utils from "../class/Utils";
+import JSONWebToken from '../class/JSONwebToken';
+
 
 const router: express.Router = express.Router();
 const basicController = new Controller(modelSauce);
 const likeController = new LikeController(modelSauce);
 const sanitize = new Sanitize(validator);
 const auth = new Auth(
-    factory.getInstanceMemoized("UtilsMemo"),
-    factory.getInstanceMemoized("JSONWebTokenMemo"));
+    factory.getInstanceMemoized<Utils>("UtilsMemo"),
+    factory.getInstanceMemoized<JSONWebToken>("JSONWebTokenMemo"));
 
 router.get(`/`,
     (req, res, next) => auth.verifAuth(req, res, next),

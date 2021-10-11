@@ -17,7 +17,6 @@ var Sanitize = /** @class */ (function () {
     * @param {Request} req
     * @param {Response} res
     * @param {NextFunction} next
-    * @param {Validator} validator
     */
     Sanitize.prototype.sanitizerAuth = function (req, res, next) {
         if (req.body.password) {
@@ -33,7 +32,6 @@ var Sanitize = /** @class */ (function () {
     * @param {Request} req
     * @param {Response} res
     * @param {NextFunction} next
-    * @param {Validator} validator
     */
     Sanitize.prototype.sanitizeDataSauce = function (req, res, next) {
         if (req.body.sauce) {

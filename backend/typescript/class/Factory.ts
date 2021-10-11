@@ -12,27 +12,27 @@ import {
   CryptoInterface,
 } from "../interface/interfaces";
 
-
-
-/**
- * Allow get unique instance memoized of class
- * @export
- * @class Factory
- */
-export default class Factory {
-    protected allInstancesMemo: {
+type AllInstancesMemo = {
         BcryptMemo: BcryptInterface;
         ConnectionMemo: BasicConnectionInterface;
         CryptoMemo: CryptoInterface;
         JSONWebTokenMemo: JSONWebToken;
         UtilsMemo: Utils;
     };
+/**
+ * Allow get unique instance memoized of class
+ * @export
+ * @class Factory
+ */
+export default class Factory {
+
+    protected allInstancesMemo: AllInstancesMemo; 
 
     /**
-     *Creates an instance of Factory.
-    * @param {() => Bcrypt} BcryptInstMemo
-    * @param {() => Connection} ConnectionInstMemo
-    * @param {() => Crypto} CryptoInstMemo
+    * Creates an instance of Factory.
+    * @param {() => BcryptInterface} BcryptInstMemo
+    * @param {() => BasicConnectionInterface} ConnectionInstMemo
+    * @param {() => CryptoInterface} CryptoInstMemo
     * @param {() => JSONWebToken} JSONWebTokenInstMemo
     * @param {() => Utils} UtilsInstMemo
     * @memberof Factory
@@ -43,7 +43,7 @@ export default class Factory {
         CryptoInstMemo: () => CryptoInterface,
         JSONWebTokenInstMemo: () => JSONWebToken,
         UtilsInstMemo: () => Utils
-        ) {
+    ) {
         this.allInstancesMemo = {
             BcryptMemo: BcryptInstMemo(),
             ConnectionMemo: ConnectionInstMemo(),
@@ -53,11 +53,11 @@ export default class Factory {
         };
     }
 
-    public getInstanceMemoized(type: string) {
+    public getInstanceMemoized<T>(type: string): T {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];
         }
-        throw Error("The argument type is not a valid");
+        throw Error("The argument 'type' is not a valid");
     }
 }
 

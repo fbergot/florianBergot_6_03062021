@@ -16,10 +16,10 @@ var memoized_1 = require("../memo/memoized");
  */
 var Factory = /** @class */ (function () {
     /**
-     *Creates an instance of Factory.
-    * @param {() => Bcrypt} BcryptInstMemo
-    * @param {() => Connection} ConnectionInstMemo
-    * @param {() => Crypto} CryptoInstMemo
+    * Creates an instance of Factory.
+    * @param {() => BcryptInterface} BcryptInstMemo
+    * @param {() => BasicConnectionInterface} ConnectionInstMemo
+    * @param {() => CryptoInterface} CryptoInstMemo
     * @param {() => JSONWebToken} JSONWebTokenInstMemo
     * @param {() => Utils} UtilsInstMemo
     * @memberof Factory
@@ -37,7 +37,7 @@ var Factory = /** @class */ (function () {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];
         }
-        throw Error("The argument type is not a valid");
+        throw Error("The argument 'type' is not a valid");
     };
     return Factory;
 }());

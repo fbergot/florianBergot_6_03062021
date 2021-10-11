@@ -39,19 +39,24 @@ exports.__esModule = true;
 exports.valid = void 0;
 var yup = require("yup");
 var Validation = /** @class */ (function () {
-    function Validation(yup) {
-        this.schemaAuth = yup.object().shape({
-            email: yup.string().required().email(),
-            password: yup.string().required().min(4)
+    /**
+     * Creates an instance of Validation.
+     * @param {typeof yup} yupM injection dependency
+     * @memberof Validation
+     */
+    function Validation(yupM) {
+        this.schemaAuth = yupM.object().shape({
+            email: yupM.string().required().email(),
+            password: yupM.string().required().min(4)
         });
-        this.schemaProd = yup.object().shape({
-            userId: yup.string().required(),
-            name: yup.string().required().max(30),
-            manufacturer: yup.string().required().max(30),
-            description: yup.string().required().max(100),
-            mainPepper: yup.string().required().max(30),
-            heat: yup.number().required().integer().min(0).max(10),
-            websiteUrl: yup.string().url()
+        this.schemaProd = yupM.object().shape({
+            userId: yupM.string().required(),
+            name: yupM.string().required().max(30),
+            manufacturer: yupM.string().required().max(30),
+            description: yupM.string().required().max(100),
+            mainPepper: yupM.string().required().max(30),
+            heat: yupM.number().required().integer().min(0).max(10),
+            websiteUrl: yupM.string().url()
         });
     }
     Validation.prototype.validationAuth = function (req, res, next) {
@@ -90,7 +95,7 @@ var Validation = /** @class */ (function () {
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         if (req.body.sauce) {
-                            // if JSON.parse throw an , error, is SyntaxError
+                            // JSON.parse can throw a SyntaxError
                             body = JSON.parse(req.body.sauce);
                         }
                         else {

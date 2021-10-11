@@ -23,7 +23,7 @@ export default class LikeController {
             alreadyLiked: 'This user already liked this sauce',
             alreadyDisliked: 'This user already disliked this sauce',
             modifIsOk: 'Registered modifications ',
-            badValue: 'Bad value of "like"'
+            badValue: 'Bad value of \'like\''
         }
     }
 
@@ -49,6 +49,29 @@ export default class LikeController {
     }
 
     /**
+     * Refacto for the operation according to case of like 1, -1)
+     * @private
+     * @param {string} prop
+     * @param {string} likesOrDislikes
+     * @param {*} product
+     * @param {Response} res
+     * @param {string} id
+     * @throw if (prop !== usersLiked or usersDisliked) || (likesOrDislikes !== "likes" or 'disLikes')
+     * @memberof LikeController
+     */
+    private refactCase(prop: string, likesOrDislikes: string, product: any, res: Response, id: string): void {
+        if ((prop === "usersLiked" || prop === "usersDisliked") && (likesOrDislikes === 'likes' || likesOrDislikes === 'disLikes')) {
+            if (product[prop].includes(id)) {
+                    res.status(409).json({ message: this.messages.alreadyLiked });
+                } else {
+                    product[likesOrDislikes] += 1;
+                    product[prop].push(id);
+                    this.saveAndResponse(res, product);
+                }
+        } else throw Error('Bad argument(s) given (prop or/and likesOrDislikes');
+    }
+
+    /**
      * analyze and operate according to state (0, 1, -1)
      * @param {Response} res
      * @param {*} product
@@ -61,14 +84,8 @@ export default class LikeController {
         let index: undefined | number;
         switch (stateLike) {
             case 1:
-                if (product.usersLiked.includes(id)) {
-                    res.status(409).json({ message: this.messages.alreadyLiked });
-                } else {
-                    product.likes += 1;
-                    product.usersLiked.push(id);
-                    this.saveAndResponse(res, product);
-                }
-                break;
+                    this.refactCase('usersLiked', 'likes', product, res, id);
+                break;          
             case 0:
                 if (product.usersLiked.includes(id)) {
                     product.likes -= 1;
@@ -82,16 +99,10 @@ export default class LikeController {
                     product.usersDisliked.splice(index, 1);
                     this.saveAndResponse(res, product);
                 }
-                break;
+                break;           
             case -1:
-                if (product.usersDisliked.includes(id)) {
-                    res.status(409).json({ message: this.messages.alreadyDisliked });
-                } else {
-                    product.disLikes += 1;
-                    product.usersDisliked.push(id);
-                    this.saveAndResponse(res, product);
-                }
-                break;
+                this.refactCase("usersDisliked", 'disLikes', product, res, id);
+                break;           
             default:
                 res.status(400).json({ message: this.messages.badValue });
         }                             
@@ -103,7 +114,7 @@ export default class LikeController {
      * @param {*} product
      * @memberof LikeController
      */
-    private async saveAndResponse(res: Response, product: any) {
+    private async saveAndResponse(res: Response, product: any): Promise<void> {
              await product.save();
              res.status(200).json({ message: this.messages.modifIsOk });
     }

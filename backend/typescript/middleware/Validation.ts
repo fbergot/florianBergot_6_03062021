@@ -1,25 +1,38 @@
 import { Request, Response, NextFunction } from 'express';
 import * as yup from 'yup';
 
+type Body = {
+    userId: string,
+    name: string,
+    manufacturer: string,
+    description: string,
+    mainPepper: string,
+    heat: number
+}
+
 class Validation {
-    protected yup: any;
     protected schemaAuth: any;
     protected schemaProd: any;
 
-    constructor(yup: any) {
-        this.schemaAuth = yup.object().shape({
-            email: yup.string().required().email(),
-            password: yup.string().required().min(4),
+    /**
+     * Creates an instance of Validation.
+     * @param {typeof yup} yupM injection dependency
+     * @memberof Validation
+     */
+    constructor(yupM: typeof yup) {
+        this.schemaAuth = yupM.object().shape({
+            email: yupM.string().required().email(),
+            password: yupM.string().required().min(4),
         });
 
-        this.schemaProd = yup.object().shape({
-            userId: yup.string().required(),
-            name: yup.string().required().max(30),
-            manufacturer: yup.string().required().max(30),
-            description: yup.string().required().max(100),
-            mainPepper: yup.string().required().max(30),
-            heat: yup.number().required().integer().min(0).max(10),
-            websiteUrl: yup.string().url(),
+        this.schemaProd = yupM.object().shape({
+            userId: yupM.string().required(),
+            name: yupM.string().required().max(30),
+            manufacturer: yupM.string().required().max(30),
+            description: yupM.string().required().max(100),
+            mainPepper: yupM.string().required().max(30),
+            heat: yupM.number().required().integer().min(0).max(10),
+            websiteUrl: yupM.string().url(),
 
         });
     }
@@ -29,7 +42,7 @@ class Validation {
             const stateValid = await this.schemaAuth.validate({
                 email: req.body.email,
                 password: req.body.password,
-            })
+            });
             if (stateValid) next();
         } catch (err: any) {
             res.status(400).json({ error: err.message });
@@ -38,17 +51,17 @@ class Validation {
     }
 
     public async validationProd(req: Request, res: Response, next: NextFunction) {
-        let body: any;
+        let body: Body;
         if (req.body.sauce || req.body) {
             try {
                 if (req.body.sauce) {
-                    // if JSON.parse throw an , error, is SyntaxError
+                    // JSON.parse can throw a SyntaxError
                     body = JSON.parse(req.body.sauce);                   
                 } else {
                     body = req.body;
                 }
 
-                const stateValid = await this.schemaProd.validate({            
+                const stateValid = await this.schemaProd.validate({
                     userId: body.userId,
                     name: body.name,
                     manufacturer: body.manufacturer,
@@ -56,17 +69,15 @@ class Validation {
                     mainPepper: body.mainPepper,
                     heat: body.heat,
     
-                })
-                if (stateValid) next();
+                });               
+                if (stateValid) next();             
             } catch (err: any) {
                 if (err instanceof SyntaxError) {
                     res.status(500).json({ error: err.message });
                 }
                 res.status(400).json({ error: err.message });
-            }
-            
+            }           
         }
- 
     }
 }
 
