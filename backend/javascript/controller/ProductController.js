@@ -59,7 +59,7 @@ var ProductController = /** @class */ (function () {
         var _this = this;
         var _a;
         var objRequest = req.body.sauce;
-        // add missing properties of sauce
+        // add & init missing properties of sauce
         var objWithAllData = __assign(__assign({}, objRequest), { likes: 0, dislikes: 0, usersLiked: [], usersDisliked: [], imageUrl: req.protocol + "://" + req.get('host') + "/images/" + ((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) });
         delete objWithAllData._id;
         // new doc

@@ -6,11 +6,8 @@ import Crypto from "./Crypto";
 import JSONWebToken from "./JSONwebToken";
 import Utils from "./Utils";
 import memoized from "../memo/memoized";
-import {
-    BcryptInterface,
-    BasicConnectionInterface,
-    CryptoInterface,
-    JSONWebTokenInterface,
+import { BcryptInterface, BasicConnectionInterface,
+    CryptoInterface, JSONWebTokenInterface,
 } from "../interface/interfaces";
 
 type AllInstancesMemo = {
@@ -54,6 +51,13 @@ export default class Factory {
         };
     }
 
+    /**
+     * Get an unique instance of class according to arg type: string
+     * @template T
+     * @param {string} type
+     * @returns {T}
+     * @memberof Factory
+     */
     public getInstanceMemoized<T>(type: string): T {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];

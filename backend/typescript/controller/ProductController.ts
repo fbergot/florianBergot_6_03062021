@@ -59,9 +59,9 @@ export default class ProductController implements BasicController {
      */
     public save(req: Request, res: Response, next: NextFunction): void {
         const objRequest = req.body.sauce;
-        // add missing properties of sauce
+        // add & init missing properties of sauce
         const objWithAllData = {
-            ...objRequest,
+            ...objRequest, 
             likes: 0,
             dislikes: 0,
             usersLiked: [],

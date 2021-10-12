@@ -33,6 +33,13 @@ var Factory = /** @class */ (function () {
             UtilsMemo: UtilsInstMemo()
         };
     }
+    /**
+     * Get an unique instance of class according to arg type: string
+     * @template T
+     * @param {string} type
+     * @returns {T}
+     * @memberof Factory
+     */
     Factory.prototype.getInstanceMemoized = function (type) {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];
