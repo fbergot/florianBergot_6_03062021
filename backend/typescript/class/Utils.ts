@@ -69,7 +69,7 @@ export default class Utils {
     }
 
     /**
-     * Set the headers
+     * Set the CORS headers
      * @param {express.Request} req
      * @param {express.Response} res
      * @param {CallableFunction} next

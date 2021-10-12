@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Mongoose } from "mongoose";
+import * as jwt from 'jsonwebtoken';
 
 
 export interface BasicController {   
@@ -81,4 +82,9 @@ export interface SauceInterface {
 export interface Validator {
     ltrim: ((input: string) => string),
     escape: ((input: string) => string)
+}
+
+export interface JSONWebTokenInterface { 
+    signJWT: (payload: PayloadInterface, secret: string, options: jwt.SignOptions) => Promise<any>,
+    verifyJWT: (token: string, secret: jwt.Secret | jwt.GetPublicKeyOrSecret, options: any) => Promise<any>
 }

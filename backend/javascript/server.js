@@ -1,8 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var http = require("http");
-var app_1 = require("./app");
 var dotenv = require("dotenv");
+var app_1 = require("./app");
 var Factory_1 = require("./class/Factory");
 dotenv.config();
 var server = http.createServer(app_1["default"]);

@@ -7,16 +7,17 @@ import JSONWebToken from "./JSONwebToken";
 import Utils from "./Utils";
 import memoized from "../memo/memoized";
 import {
-  BcryptInterface,
-  BasicConnectionInterface,
-  CryptoInterface,
+    BcryptInterface,
+    BasicConnectionInterface,
+    CryptoInterface,
+    JSONWebTokenInterface,
 } from "../interface/interfaces";
 
 type AllInstancesMemo = {
         BcryptMemo: BcryptInterface;
         ConnectionMemo: BasicConnectionInterface;
         CryptoMemo: CryptoInterface;
-        JSONWebTokenMemo: JSONWebToken;
+        JSONWebTokenMemo: JSONWebTokenInterface;
         UtilsMemo: Utils;
     };
 /**
@@ -33,7 +34,7 @@ export default class Factory {
     * @param {() => BcryptInterface} BcryptInstMemo
     * @param {() => BasicConnectionInterface} ConnectionInstMemo
     * @param {() => CryptoInterface} CryptoInstMemo
-    * @param {() => JSONWebToken} JSONWebTokenInstMemo
+    * @param {() => JSONWebTokenInterface} JSONWebTokenInstMemo
     * @param {() => Utils} UtilsInstMemo
     * @memberof Factory
     */
@@ -41,7 +42,7 @@ export default class Factory {
         BcryptInstMemo: () => BcryptInterface,
         ConnectionInstMemo: () => BasicConnectionInterface,
         CryptoInstMemo: () => CryptoInterface,
-        JSONWebTokenInstMemo: () => JSONWebToken,
+        JSONWebTokenInstMemo: () => JSONWebTokenInterface,
         UtilsInstMemo: () => Utils
     ) {
         this.allInstancesMemo = {
@@ -57,7 +58,7 @@ export default class Factory {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];
         }
-        throw Error("The argument 'type' is not a valid");
+        throw Error("The argument 'type' is not valid");
     }
 }
 
@@ -65,6 +66,6 @@ export const factory = new Factory (
     memoized<BcryptInterface>(Bcrypt, { module:  bcrypt }),
     memoized<BasicConnectionInterface>(Connection, { module: null }),
     memoized<CryptoInterface>(Crypto, { module: null }),
-    memoized<JSONWebToken>(JSONWebToken, { module: jwt }),
+    memoized<JSONWebTokenInterface>(JSONWebToken, { module: jwt }),
     memoized<Utils>(Utils, { module: null })
 )

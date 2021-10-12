@@ -1,5 +1,5 @@
 import * as jwt from 'jsonwebtoken';
-import { PayloadInterface } from '../interface/interfaces';
+import { PayloadInterface, JSONWebTokenInterface } from '../interface/interfaces';
 
 
 /**
@@ -7,7 +7,7 @@ import { PayloadInterface } from '../interface/interfaces';
  * @export
  * @class JSONWebToken
  */
-export default class JSONWebToken {
+export default class JSONWebToken implements JSONWebTokenInterface {
 
     protected JWT: typeof jwt;
 

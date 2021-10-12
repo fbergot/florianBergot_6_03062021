@@ -20,7 +20,7 @@ var Factory = /** @class */ (function () {
     * @param {() => BcryptInterface} BcryptInstMemo
     * @param {() => BasicConnectionInterface} ConnectionInstMemo
     * @param {() => CryptoInterface} CryptoInstMemo
-    * @param {() => JSONWebToken} JSONWebTokenInstMemo
+    * @param {() => JSONWebTokenInterface} JSONWebTokenInstMemo
     * @param {() => Utils} UtilsInstMemo
     * @memberof Factory
     */
@@ -37,7 +37,7 @@ var Factory = /** @class */ (function () {
         if (type in this.allInstancesMemo) {
             return this.allInstancesMemo[type];
         }
-        throw Error("The argument 'type' is not a valid");
+        throw Error("The argument 'type' is not valid");
     };
     return Factory;
 }());

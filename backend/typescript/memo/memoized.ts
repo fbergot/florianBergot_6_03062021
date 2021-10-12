@@ -1,11 +1,3 @@
-import Bcrypt from "../class/Bcrypt";
-import Connection from "../class/Connection";
-import Crypto from "../class/Crypto";
-import JSONWebToken from "../class/JSONwebToken";
-import Utils from "../class/Utils";
-
-
-
 /**
  * Memoized instance of class (with closure)
  * @export

@@ -26,7 +26,7 @@ var ProductController = /** @class */ (function () {
         };
     }
     /**
-     * find one/all item(s)
+     * find item(s)
      * @param {express.Request} req
      * @param {express.Response} res
      * @param {CallableFunction} next

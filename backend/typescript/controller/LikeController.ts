@@ -115,7 +115,7 @@ export default class LikeController {
      * @memberof LikeController
      */
     private async saveAndResponse(res: Response, product: any): Promise<void> {
-             await product.save();
-             res.status(200).json({ message: this.messages.modifIsOk });
+        await product.save();
+        res.status(200).json({ message: this.messages.modifIsOk });
     }
 }

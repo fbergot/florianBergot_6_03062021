@@ -25,7 +25,7 @@ export default class Bcrypt implements BcryptInterface {
      */
     public async bcryptHash(data: string | Buffer, salt: number): Promise<string> {
         return await this.bcryptModule.hash(data, salt);      
-    }
+    } 
 
     /**
      * Compare plaintext data with hash data

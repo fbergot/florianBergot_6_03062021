@@ -37,7 +37,6 @@ export default class Auth {
      * @return {Promise<boolean>}
      * @memberof Auth
      */
-
     public async verifAuth (req: Request, res: Response, next: CallableFunction): Promise<boolean|null> {
         try {
             const token = this.UtilsInst.getTokenInHeader(req, this.messages.errorMessageToken);
