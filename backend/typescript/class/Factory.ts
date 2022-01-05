@@ -17,6 +17,7 @@ type AllInstancesMemo = {
         JSONWebTokenMemo: JSONWebTokenInterface;
         UtilsMemo: Utils;
     };
+
 /**
  * Allow get unique instance memoized of class
  * @export
@@ -25,16 +26,7 @@ type AllInstancesMemo = {
 export default class Factory {
 
     protected allInstancesMemo: AllInstancesMemo; 
-
-    /**
-    * Creates an instance of Factory.
-    * @param {() => BcryptInterface} BcryptInstMemo
-    * @param {() => BasicConnectionInterface} ConnectionInstMemo
-    * @param {() => CryptoInterface} CryptoInstMemo
-    * @param {() => JSONWebTokenInterface} JSONWebTokenInstMemo
-    * @param {() => Utils} UtilsInstMemo
-    * @memberof Factory
-    */
+    
     constructor(
         BcryptInstMemo: () => BcryptInterface,
         ConnectionInstMemo: () => BasicConnectionInterface,
@@ -54,8 +46,6 @@ export default class Factory {
     /**
      * Get an unique instance of class according to arg type: string
      * @template T
-     * @param {string} type
-     * @returns {T}
      * @memberof Factory
      */
     public getInstanceMemoized<T>(type: string): T {
